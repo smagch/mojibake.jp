@@ -7,7 +7,7 @@
     "build:next": "next build",
     "build:export": "next export",
     "start": "next start",
-    "test": "run-s test:*",
+    "test": "run-s lint test:*",
     "test:jest": "jest",
     "test:prettier": "prettier --check src",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
