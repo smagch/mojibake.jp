@@ -16,3 +16,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_GTM_ID: string;
   }
 }
+
+declare module '*.css';
+declare module '*.scss';
