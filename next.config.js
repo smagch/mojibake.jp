@@ -1,4 +1,6 @@
 const { withSentryConfig } = require("@sentry/nextjs");
+const WorkboxPlugin = require("workbox-webpack-plugin");
+const workBoxConfig = require("./workbox-config");
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
@@ -20,6 +22,10 @@ const moduleExports = {
         fs: "empty",
       };
     }
+
+    config.plugins.push(
+      new WorkboxPlugin.InjectManifest(workBoxConfig)
+    );
 
     config.module.rules.push({
       test: /\.svg$/,
