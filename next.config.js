@@ -1,4 +1,4 @@
-const { withSentryConfig } = require('@sentry/nextjs');
+const { withSentryConfig } = require("@sentry/nextjs");
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
@@ -17,7 +17,7 @@ const moduleExports = {
   webpack(config, { isServer }) {
     if (!isServer) {
       config.node = {
-        fs: 'empty'
+        fs: "empty",
       };
     }
 
@@ -28,7 +28,7 @@ const moduleExports = {
       },
       use: [
         {
-          loader: '@svgr/webpack',
+          loader: "@svgr/webpack",
           options: {
             svgoConfig: {
               plugins: {

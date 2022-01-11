@@ -11,7 +11,7 @@
     "test:jest": "jest",
     "test:prettier": "prettier --check src",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "fmt": "prettier --write src",
+    "fmt": "prettier --write src './*.js'",
     "storybook": "start-storybook -p 9009 -s public"
   },
   "dependencies": {
