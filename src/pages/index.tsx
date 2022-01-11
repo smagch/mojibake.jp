@@ -45,7 +45,11 @@ const Home: NextPage = () => {
         <input type="file" onChange={handleChange} />
       </div>
       {!!url && (
-        <a href={`/file/?url=${encodeURIComponent(url)}`} target="_blank">
+        <a
+          href={`/file/?url=${encodeURIComponent(url)}`}
+          target="_blank"
+          rel="noreferrer"
+        >
           foo
         </a>
       )}
