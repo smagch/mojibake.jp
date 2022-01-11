@@ -28,6 +28,7 @@ const Home: NextPage = () => {
     }
 
     fetchFile();
+    // setDownloadURL()
   }, [url]);
 
   return <>
@@ -39,6 +40,9 @@ const Home: NextPage = () => {
     <div>
       <input type="file" onChange={handleChange} />
     </div>
+    {!!url && (
+      <a href={`/file/?url=${encodeURIComponent(url)}`} target="_blank">foo</a>
+    )}
   </>;
 };
 
