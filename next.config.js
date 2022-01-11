@@ -23,9 +23,7 @@ const moduleExports = {
       };
     }
 
-    config.plugins.push(
-      new WorkboxPlugin.InjectManifest(workBoxConfig)
-    );
+    config.plugins.push(new WorkboxPlugin.InjectManifest(workBoxConfig));
 
     config.module.rules.push({
       test: /\.svg$/,
