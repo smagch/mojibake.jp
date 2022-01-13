@@ -29,9 +29,10 @@ const Or = () => {
 
 type Props = {
   onSelectFiles: (files: File[]) => void;
+  onClick: () => void;
 };
 
-const OmniInputWelcomeView = ({ onSelectFiles }: Props) => {
+const OmniInputWelcomeView = ({ onSelectFiles, onClick }: Props) => {
   const handleInputChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target?.files) {
@@ -40,12 +41,15 @@ const OmniInputWelcomeView = ({ onSelectFiles }: Props) => {
     },
     [onSelectFiles]
   );
+  const stopPropagation = React.useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+  }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={onClick}>
       <IconParagraph name="postAdd">ファイルをドラッグ＆ドロップ</IconParagraph>
       <Or />
-      <label className={styles.fileInput}>
+      <label className={styles.fileInput} onClick={stopPropagation}>
         ファイルを選択
         <input
           type="file"
