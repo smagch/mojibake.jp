@@ -1,7 +1,7 @@
 import * as React from "react";
 import Icon, { IconName } from "./Icon";
 
-const iconNames: IconName[] = ["add", "remove", "edit"];
+const iconNames: IconName[] = ["add", "remove", "edit", "postAdd"];
 
 export const Icons: React.FC = () => {
   return (
