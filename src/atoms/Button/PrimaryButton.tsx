@@ -9,6 +9,7 @@ type Props = JSX.IntrinsicElements["button"] & {
 
 export const PrimaryButton = React.forwardRef<HTMLButtonElement, Props>(
   (props: Props, ref) => {
+    // eslint-disable-next-line react/prop-types
     const { className, modifier, size, ...otherProps } = props;
     return (
       <button
