@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Icon, IconName } from "atoms/Button";
-import styles from "./OmniInputBox.module.scss";
+import styles from "./OmniInputWelcomeView.module.scss";
 
 const IconParagraph = ({
   name,
@@ -27,14 +27,33 @@ const Or = () => {
   );
 };
 
-const OmniInputBox = () => {
+type Props = {
+  onSelectFiles: (files: File[]) => void;
+};
+
+const OmniInputWelcomeView = ({ onSelectFiles }: Props) => {
+  const handleInputChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target?.files) {
+        onSelectFiles(Array.from(e.target.files));
+      }
+    },
+    [onSelectFiles]
+  );
+
   return (
     <div className={styles.container}>
       <IconParagraph name="postAdd">ファイルをドラッグ＆ドロップ</IconParagraph>
       <Or />
       <label className={styles.fileInput}>
         ファイルを選択
-        <input type="file" multiple accept="text/*" hidden />
+        <input
+          type="file"
+          multiple
+          accept="text/*"
+          hidden
+          onChange={handleInputChange}
+        />
       </label>
       <Or />
       <IconParagraph name="edit">
@@ -44,4 +63,4 @@ const OmniInputBox = () => {
   );
 };
 
-export default OmniInputBox;
+export default OmniInputWelcomeView;
