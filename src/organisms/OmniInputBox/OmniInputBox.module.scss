@@ -1,3 +1,6 @@
+@use "styles/colors";
+@use "styles/sizes";
+
 $color: #5f83a5;
 
 .container {
@@ -55,4 +58,24 @@ $color: #5f83a5;
   width: 60px;
   height: 1px;
   background-color: #88a1b8;
+}
+
+.fileInput {
+  display: block;
+  background-color: colors.$primary;
+  transition: background-color 0.3s;
+  color: white;
+  font-weight: 700;
+  border: 0;
+  border-radius: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  height: sizes.$button-height;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  > input {
+    display: none;
+  }
 }

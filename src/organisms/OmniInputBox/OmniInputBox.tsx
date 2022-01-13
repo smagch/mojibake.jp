@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Icon, IconName, PrimaryButton } from "atoms/Button";
+import { Icon, IconName } from "atoms/Button";
 import styles from "./OmniInputBox.module.scss";
 
 const IconParagraph = ({
@@ -32,9 +32,10 @@ const OmniInputBox = () => {
     <div className={styles.container}>
       <IconParagraph name="postAdd">ファイルをドラッグ＆ドロップ</IconParagraph>
       <Or />
-      <div className={styles.buttonContainer}>
-        <PrimaryButton>ファイルを選択</PrimaryButton>
-      </div>
+      <label className={styles.fileInput}>
+        ファイルを選択
+        <input type="file" multiple accept="text/*" hidden />
+      </label>
       <Or />
       <IconParagraph name="edit">
         文字化けしたテキストをここに貼り付ける
