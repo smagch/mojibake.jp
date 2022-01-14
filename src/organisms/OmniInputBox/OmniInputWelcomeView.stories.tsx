@@ -6,7 +6,6 @@ export const Demo = () => {
   return (
     <OmniInputWelcomeView
       onSelectFiles={action("OmniInputWelcomeView.onSelectFiles")}
-      onClick={action("OmniInputWelcomeView.onClick")}
     />
   );
 };

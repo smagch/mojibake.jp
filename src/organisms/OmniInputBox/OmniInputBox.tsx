@@ -22,15 +22,24 @@ const OmniInputBox = () => {
     setViewMode("welcome");
   }, []);
 
+  const containerClickHandler = React.useMemo(() => {
+    if (viewMode !== "welcome") {
+      return;
+    }
+    return () => {
+      setViewMode("editor");
+    };
+  }, [viewMode]);
+
   return (
-    <div className={clsx(styles.container, styles[viewMode])}>
+    <div
+      className={clsx(styles.container, styles[viewMode])}
+      onClick={containerClickHandler}
+    >
       {viewMode === "editor" ? (
         <Editor onSubmit={handleTextInput} />
       ) : (
-        <OmniInputWelcomeView
-          onSelectFiles={handleSelctFiles}
-          onClick={handleClick}
-        />
+        <OmniInputWelcomeView onSelectFiles={handleSelctFiles} />
       )}
     </div>
   );
