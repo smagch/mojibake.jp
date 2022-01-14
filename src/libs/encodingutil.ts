@@ -1,4 +1,4 @@
-type Encoding = "utf-8" | "shift-jis";
+export type Encoding = "utf-8" | "shift-jis";
 
 export async function detectTextEncoding(
   readable: ReadableStream

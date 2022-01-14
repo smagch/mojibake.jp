@@ -57,10 +57,6 @@ const OmniInputWelcomeView = ({ onSelectFiles }: Props) => {
           onChange={handleInputChange}
         />
       </label>
-      <Or />
-      <IconParagraph name="edit">
-        文字化けしたテキストをここに貼り付ける
-      </IconParagraph>
     </div>
   );
 };

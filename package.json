@@ -12,7 +12,7 @@
     "test:prettier": "prettier --check src",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "fmt": "prettier --write src './*.js'",
-    "storybook": "start-storybook -p 9009 -s public"
+    "storybook": "start-storybook -p 9009 -s public,src/libs/__tests__/testdata"
   },
   "dependencies": {
     "clsx": "^1.1.1",
