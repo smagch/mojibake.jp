@@ -13,6 +13,7 @@ const iconNames: IconName[] = [
   "download",
   "error",
   "spinner",
+  "loop",
 ];
 
 export const Icons: React.FC = () => {

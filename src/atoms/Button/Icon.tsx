@@ -11,6 +11,7 @@ import { ReactComponent as ContentCopy } from "../../svg/content_copy.svg";
 import { ReactComponent as Download } from "../../svg/download.svg";
 import { ReactComponent as ErrorIcon } from "../../svg/error.svg";
 import { ReactComponent as Spinner } from "../../svg/spinner.svg";
+import { ReactComponent as Loop } from "../../svg/loop.svg";
 
 export type IconName =
   | "add"
@@ -23,7 +24,8 @@ export type IconName =
   | "content_copy"
   | "download"
   | "error"
-  | "spinner";
+  | "spinner"
+  | "loop";
 
 type IconMap = {
   [key in IconName]: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -41,6 +43,7 @@ const iconMap: IconMap = {
   download: Download,
   error: ErrorIcon,
   spinner: Spinner,
+  loop: Loop,
 };
 
 export type Props = SVGProps<SVGSVGElement> & {
