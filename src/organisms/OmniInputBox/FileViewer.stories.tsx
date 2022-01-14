@@ -49,11 +49,7 @@ export const Demo = () => {
         height: "400px",
       }}
     >
-      <FileViewer
-        file={file}
-        onDownload={action("FileViewer.onDownload")}
-        onCopy={action("FileViewer.onCopy")}
-      />
+      <FileViewer file={file} />
     </div>
   );
 };

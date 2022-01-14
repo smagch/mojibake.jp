@@ -11,11 +11,11 @@ export type InputFile = {
 
 type Props = {
   file: InputFile;
-  onDownload: () => void;
-  onCopy: () => void;
+  // onDownload: () => void;
+  // onCopy: () => void;
 };
 
-const FileViewer = ({ file, onDownload, onCopy }: Props) => {
+const FileViewer = ({ file }: Props) => {
   const [encoding, setEncoding] = React.useState<Encoding | null>(null);
 
   React.useEffect(() => {
@@ -43,6 +43,10 @@ const FileViewer = ({ file, onDownload, onCopy }: Props) => {
     };
   }, [encoding, file]);
 
+  const dataURL = React.useMemo<string>(() => {
+    return URL.createObjectURL(file as File);
+  }, [file]);
+
   console.log("encoding", encoding);
 
   return (
@@ -53,7 +57,7 @@ const FileViewer = ({ file, onDownload, onCopy }: Props) => {
           {file.name}
         </div>
         <PrimaryLink
-          href={`/file/?url=foo`}
+          href={`/file/?url=${encodeURIComponent(dataURL)}`}
           target="_blank"
           rel="noreferrer"
           modifier="iconRight"

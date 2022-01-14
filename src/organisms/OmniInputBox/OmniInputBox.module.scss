@@ -1,9 +1,10 @@
 .container {
   width: 100%;
-  min-height: 500px;
+  min-height: 360px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  outline: 24px solid #fff;
 
   &.welcome {
     background-color: #f0fffe;

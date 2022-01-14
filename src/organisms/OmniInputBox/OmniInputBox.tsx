@@ -4,7 +4,11 @@ import FileViewer, { InputFile } from "./FileViewer";
 import clsx from "clsx";
 import styles from "./OmniInputBox.module.scss";
 
-const OmniInputBox = () => {
+type Props = {
+  className?: string;
+};
+
+const OmniInputBox = ({ className }: Props) => {
   const [file, setFile] = React.useState<null | InputFile>(null);
 
   const handleSelctFiles = React.useCallback((files: File[]) => {
@@ -12,19 +16,24 @@ const OmniInputBox = () => {
   }, []);
 
   return (
+    // <div className={styles.wrapper}>
     <div
-      className={clsx({
-        [styles.container]: true,
-        [styles.welcome]: !file,
-        [styles.viewer]: !!file,
-      })}
+      className={clsx(
+        {
+          [styles.container]: true,
+          [styles.welcome]: !file,
+          [styles.viewer]: !!file,
+        },
+        className
+      )}
     >
       {!file ? (
         <OmniInputWelcomeView onSelectFiles={handleSelctFiles} />
       ) : (
-        <FileViewer file={file} onDownload={console.log} onCopy={console.log} />
+        <FileViewer file={file} />
       )}
     </div>
+    // </div>
   );
 };
 
