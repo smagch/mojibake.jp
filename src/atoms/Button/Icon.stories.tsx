@@ -1,7 +1,19 @@
 import * as React from "react";
 import Icon, { IconName } from "./Icon";
 
-const iconNames: IconName[] = ["add", "remove", "edit", "postAdd"];
+const iconNames: IconName[] = [
+  "add",
+  "remove",
+  "edit",
+  "postAdd",
+  "arrow_back",
+  "article",
+  "check_circle",
+  "content_copy",
+  "download",
+  "error",
+  "spinner",
+];
 
 export const Icons: React.FC = () => {
   return (
