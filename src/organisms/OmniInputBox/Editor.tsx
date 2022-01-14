@@ -5,24 +5,10 @@ import styles from "./Editor.module.scss";
 
 type Props = {
   onSubmit: (value: string) => void;
+  onEmptyBlur: () => void;
 };
 
-const EditorHeader = () => {
-  return (
-    <>
-      <div className={styles.iconTitle}>
-        <Icon name="edit" />
-        テキストを貼り付けてください
-      </div>
-      <PrimaryButton modifier="iconRight">
-        変換する
-        <Icon name="loop" />
-      </PrimaryButton>
-    </>
-  );
-};
-
-const Editor = ({ onSubmit }: Props) => {
+const Editor = ({ onSubmit, onEmptyBlur }: Props) => {
   const [value, setValue] = React.useState<string>("");
 
   const handleChange = React.useCallback(
@@ -34,20 +20,49 @@ const Editor = ({ onSubmit }: Props) => {
 
   const handleBlur = React.useCallback(() => {
     if (value === "") {
-      onSubmit(value);
+      onEmptyBlur();
     }
-  }, [value, onSubmit]);
+  }, [value, onEmptyBlur]);
+
+  const handleSubmit = React.useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (value) {
+        onSubmit(value);
+      }
+    },
+    [onSubmit, value]
+  );
 
   return (
-    <ViewerLayout headerChildren={<EditorHeader />}>
-      <textarea
-        className={styles.editor}
-        autoFocus
-        onBlur={handleBlur}
-        value={value}
-        onChange={handleChange}
-      />
-    </ViewerLayout>
+    <form className={styles.wrapper} onSubmit={handleSubmit}>
+      <ViewerLayout
+        headerChildren={
+          <>
+            <div className={styles.iconTitle}>
+              <Icon name="edit" />
+              テキストを貼り付けてください
+            </div>
+            <PrimaryButton
+              type="submit"
+              modifier="iconRight"
+              disabled={value === ""}
+            >
+              変換する
+              <Icon name="loop" />
+            </PrimaryButton>
+          </>
+        }
+      >
+        <textarea
+          className={styles.editor}
+          autoFocus
+          onBlur={handleBlur}
+          value={value}
+          onChange={handleChange}
+        />
+      </ViewerLayout>
+    </form>
   );
 };
 

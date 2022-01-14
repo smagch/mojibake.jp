@@ -11,7 +11,10 @@ export const Demo = () => {
         height: "400px",
       }}
     >
-      <Editor onSubmit={action("Editor.onSubmit")} />
+      <Editor
+        onSubmit={action("Editor.onSubmit")}
+        onEmptyBlur={action("Editor.onEmptyBlur")}
+      />
     </div>
   );
 };
