@@ -1,8 +1,13 @@
 import * as React from "react";
 import OmniInputBox from "./OmniInputBox";
+import { Provider } from "hooks/userDndState";
 
 export const Demo = () => {
-  return <OmniInputBox />;
+  return (
+    <Provider>
+      <OmniInputBox />
+    </Provider>
+  );
 };
 
 export default {
