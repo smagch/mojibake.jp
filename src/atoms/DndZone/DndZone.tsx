@@ -48,18 +48,22 @@ const DndZone = ({ onFileDrop, children }: Props) => {
         ev.preventDefault();
         onFileDrop(files);
       }
+      setDragging(false);
     },
     [onFileDrop]
   );
 
   return (
     <div
-      className={clsx(styles.container, dragging && styles.dragging)}
+      className={styles.container}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
       {children}
+      <div className={clsx(styles.overlay, dragging && styles.dragging)}>
+        ファイルをドロップすると、文字化けの解析がはじまります。
+      </div>
     </div>
   );
 };
