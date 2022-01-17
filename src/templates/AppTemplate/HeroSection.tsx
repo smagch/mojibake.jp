@@ -1,10 +1,14 @@
 import * as React from "react";
 import OmniInputBox from "organisms/OmniInputBox";
 import styles from "./HeroSection.module.scss";
+import { ReactComponent as Logo } from "../../svg/logo.svg";
 
 const HeroSection = () => {
   return (
     <>
+      <div className={styles.nav}>
+        <Logo />
+      </div>
       <section className={styles.container}>
         <header>
           <h1 className={styles.h1}>文字化けを解消しましょう</h1>
