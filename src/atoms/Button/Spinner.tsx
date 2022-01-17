@@ -1,10 +1,15 @@
 import * as React from "react";
+import clsx from "clsx";
 import styles from "./Spinner.module.scss";
 import { ReactComponent as SpinnerImage } from "../../svg/spinner.svg";
 
-const Spinner: React.FC = () => {
+type Props = {
+  className?: string;
+};
+
+const Spinner = ({ className }: Props) => {
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, className)}>
       <SpinnerImage />
     </div>
   );

@@ -42,11 +42,17 @@
   align-items: center;
   font-weight: 700;
 
-  > svg {
-    fill: #5f83a5;
-  }
-
   > *:first-child {
     margin-right: 16px;
   }
+}
+
+.spinner {
+  svg {
+    fill: #5f83a5;
+  }
+}
+
+.check {
+  fill: colors.$green;
 }

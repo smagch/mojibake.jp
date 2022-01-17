@@ -25,7 +25,7 @@ const FileViewer = ({ file }: Props) => {
 
     let mutated = false;
     // show loader at least 0.7 seconds
-    const loadingPromise = new Promise(resolve => setTimeout(resolve, 700));
+    const loadingPromise = new Promise((resolve) => setTimeout(resolve, 700));
 
     async function detect() {
       const encoding = await detectTextEncoding(file.stream());
@@ -47,7 +47,7 @@ const FileViewer = ({ file }: Props) => {
   }, [encoding, file]);
 
   const dataURL = React.useMemo<string>(() => {
-    return URL.createObjectURL(file as File);
+    return file instanceof File ? URL.createObjectURL(file as File) : "";
   }, [file]);
 
   console.log("encoding", encoding);
@@ -56,7 +56,11 @@ const FileViewer = ({ file }: Props) => {
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <div className={styles.iconTitle}>
-          {encoding === null ? <Spinner /> : <Icon name="check_circle" />}
+          {encoding === null ? (
+            <Spinner className={styles.spinner} />
+          ) : (
+            <Icon name="check_circle" className={styles.check} />
+          )}
           {file.name}
         </div>
         <PrimaryLink
