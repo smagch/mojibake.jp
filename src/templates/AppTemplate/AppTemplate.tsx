@@ -3,7 +3,7 @@ import HeroSection from "./HeroSection";
 import { Provider as DndProvider } from "hooks/userDndState";
 
 type Props = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 const AppTemplate = ({ children }: Props) => {
