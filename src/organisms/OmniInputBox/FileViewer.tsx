@@ -24,6 +24,8 @@ const FileViewer = ({ file }: Props) => {
     }
 
     let mutated = false;
+    // show loader at least 0.7 seconds
+    const loadingPromise = new Promise(resolve => setTimeout(resolve, 700));
 
     async function detect() {
       const encoding = await detectTextEncoding(file.stream());
@@ -31,6 +33,7 @@ const FileViewer = ({ file }: Props) => {
       if (mutated) {
         return;
       }
+      await loadingPromise;
       if (encoding === "utf-8" || encoding === "shift-jis") {
         setEncoding(encoding);
       }
