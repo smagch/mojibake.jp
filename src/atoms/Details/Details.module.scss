@@ -1,19 +1,22 @@
 @use "styles/colors";
 
+$line-height: 56px;
+
 .details {
-  line-height: 56px;
-  max-height: 56px;
+  max-height: $line-height;
+  line-height: 1.6;
   position: relative;
   background-color: #fff;
   padding-left: 16px;
+  padding-right: 16px;
   border-radius: 4px;
   background-color: #f6f6ec;
   color: #504f43;
-  transition: max-height 0.3s ease;
 
   &[open] {
     max-height: 99rem;
     transition: max-height 1s ease;
+    padding-bottom: 16px;
   }
 
   > .summary::after {
@@ -22,8 +25,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
+    width: $line-height;
+    height: $line-height;
     position: absolute;
     top: 0;
     right: 0;
@@ -37,6 +40,7 @@
 }
 
 .summary {
+  line-height: $line-height;
   cursor: pointer;
   list-style: none;
   font-size: 18px;
