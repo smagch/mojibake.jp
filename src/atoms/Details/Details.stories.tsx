@@ -6,7 +6,7 @@ export const Demo = () => {
     <div style={{ width: "600px", backgroundColor: "#eee", padding: "40px" }}>
       <Details>
         <Summary>This is summary</Summary>
-        This is the content.
+        <p>This is the content.</p>
       </Details>
     </div>
   );
