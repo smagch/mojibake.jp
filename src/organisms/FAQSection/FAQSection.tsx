@@ -1,10 +1,15 @@
 import * as React from "react";
 import { Details, Summary } from "atoms/Details";
+import clsx from "clsx";
 import styles from "./FAQSection.module.scss";
 
-const FAQSection = () => {
+type Props = {
+  className?: string;
+};
+
+const FAQSection = ({ className }: Props) => {
   return (
-    <section className={styles.section}>
+    <section className={clsx(styles.section, className)}>
       <header className={styles.header}>
         <h3>FAQ</h3>
         <p>よくあるご質問</p>
