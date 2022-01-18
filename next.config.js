@@ -1,5 +1,5 @@
 const { withSentryConfig } = require("@sentry/nextjs");
-const withPWA = require('next-pwa');
+const withPWA = require("next-pwa");
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
@@ -15,15 +15,15 @@ const sentryWebpackPluginOptions = {
 
 const moduleExports = withPWA({
   pwa: {
-    dest: 'public'
+    dest: "public",
   },
   // webpack5: false,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
-    })
+      use: ["@svgr/webpack"],
+    });
 
     return config;
   },

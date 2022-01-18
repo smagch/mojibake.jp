@@ -1,3 +1,5 @@
+@use "styles/font";
+
 .section {
   max-width: 800px;
   margin-left: auto;
@@ -15,8 +17,8 @@
 
   > h3 {
     font-size: 48px;
-    font-family: Baskerville, serif;
     line-height: 1.4;
+    @include font.serif;
   }
 }
 

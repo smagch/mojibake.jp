@@ -1,3 +1,5 @@
+@use "styles/font";
+
 .footer {
   background-color: #e4fcf6;
   color: #3c2d7c;
@@ -5,8 +7,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Baskerville, serif;
-  font-style: italic;
+  font-size: 14px;
+  @include font.serif;
 
   > a {
     margin-left: 8px;

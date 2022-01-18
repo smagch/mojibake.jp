@@ -35,26 +35,6 @@ registerRoute(
   }),
 );
 
-// Make JS/CSS fast by returning assets from the cache
-// But make sure they're updating in the background for next use
-registerRoute(/\.(?:js|map|css)$/, new StaleWhileRevalidate({ cacheName: 'style-script-cache' }));
-
-// Cache images
-// But clean up after a while
-registerRoute(
-  /\.(?:png|gif|jpg|jpeg|svg)$/,
-  new CacheFirst({
-    cacheName: 'images',
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 250,
-        maxAgeSeconds: MONTH_IN_SECONDS,
-        purgeOnQuotaError: true // Automatically cleanup if quota is exceeded.
-      })
-    ]
-  })
-);
-
 self.addEventListener("fetch", (event: FetchEvent) => {
   console.log("fetch event");
   const url = new URL(event.request.url);
