@@ -3,20 +3,20 @@
 $line-height: 56px;
 
 .details {
-  max-height: $line-height;
   line-height: 1.6;
   position: relative;
   background-color: #fff;
-  padding-left: 16px;
-  padding-right: 16px;
   border-radius: 4px;
   background-color: #f6f6ec;
   color: #504f43;
 
   &[open] {
-    max-height: 99rem;
-    transition: max-height 1s ease;
     padding-bottom: 16px;
+  }
+
+  > *:not(.summary) {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   > .summary::after {
@@ -44,12 +44,18 @@ $line-height: 56px;
   cursor: pointer;
   list-style: none;
   font-size: 18px;
+  font-weight: 700;
   display: flex;
   justify-content: space-between;
   padding-right: 56px;
+  padding-left: 16px;
   color: #4e4c3f;
 
   &::marker {
     display: none;
+  }
+
+  & + * {
+    margin-top: 8px;
   }
 }

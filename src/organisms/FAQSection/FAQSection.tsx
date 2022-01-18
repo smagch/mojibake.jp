@@ -37,14 +37,18 @@ const FAQSection = ({ className }: Props) => {
         </Details>
         <Details>
           <Summary>文字化けの解析の仕組みを教えてください</Summary>
-          [文字コード]が UTF-8 っぽかったら、Shift JIS に変換します。Shift JIS
-          っぽいファイルなら、UTF-8 に変換します。
+          <p>
+            [文字コード]が UTF-8 っぽかったら、Shift JIS に変換します。Shift JIS
+            っぽいファイルなら、UTF-8 に変換します。
+          </p>
         </Details>
         <Details>
           <Summary>文字化けを解読できませんでした</Summary>
-          ご不便をおかけして申し訳ありません。 Mojibake
-          は常にサービスの質の向上に努めております。
-          差し支えなければ、[こちらのフォーム]より不具合をご報告いただけますと幸いです。
+          <p>
+            ご不便をおかけして申し訳ありません。 Mojibake
+            は常にサービスの質の向上に努めております。
+            差し支えなければ、[こちらのフォーム]より不具合をご報告いただけますと幸いです。
+          </p>
         </Details>
       </div>
     </section>
