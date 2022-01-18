@@ -1,17 +1,17 @@
 import * as React from "react";
 import type { SVGProps } from "react";
-import { ReactComponent as Add } from "../../svg/add.svg";
-import { ReactComponent as Remove } from "../../svg/remove.svg";
-import { ReactComponent as Edit } from "../../svg/edit.svg";
-import { ReactComponent as PostAdd } from "../../svg/post-add.svg";
-import { ReactComponent as ArrowBack } from "../../svg/arrow_back.svg";
-import { ReactComponent as Article } from "../../svg/article.svg";
-import { ReactComponent as CheckCircle } from "../../svg/check_circle.svg";
-import { ReactComponent as ContentCopy } from "../../svg/content_copy.svg";
-import { ReactComponent as Download } from "../../svg/download.svg";
-import { ReactComponent as ErrorIcon } from "../../svg/error.svg";
-import { ReactComponent as Spinner } from "../../svg/spinner.svg";
-import { ReactComponent as Loop } from "../../svg/loop.svg";
+import Add from "../../svg/add.svg";
+import Remove from "../../svg/remove.svg";
+import Edit from "../../svg/edit.svg";
+import PostAdd from "../../svg/post-add.svg";
+import ArrowBack from "../../svg/arrow_back.svg";
+import Article from "../../svg/article.svg";
+import CheckCircle from "../../svg/check_circle.svg";
+import ContentCopy from "../../svg/content_copy.svg";
+import Download from "../../svg/download.svg";
+import ErrorIcon from "../../svg/error.svg";
+import Spinner from "../../svg/spinner.svg";
+import Loop from "../../svg/loop.svg";
 
 export type IconName =
   | "add"

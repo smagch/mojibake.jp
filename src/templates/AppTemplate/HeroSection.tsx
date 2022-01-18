@@ -1,7 +1,7 @@
 import * as React from "react";
 import OmniInputBox from "organisms/OmniInputBox";
 import styles from "./HeroSection.module.scss";
-import { ReactComponent as Logo } from "../../svg/logo.svg";
+import Logo from "../../svg/logo.svg";
 
 const HeroSection = () => {
   return (
