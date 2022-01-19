@@ -19,23 +19,20 @@ const FileViewer = ({ file }: Props) => {
   const [encoding, setEncoding] = React.useState<Encoding | null>(null);
 
   React.useEffect(() => {
-    if (encoding) {
-      return;
-    }
+    setEncoding(null);
 
     let mutated = false;
     // show loader at least 0.7 seconds
     const loadingPromise = new Promise((resolve) => setTimeout(resolve, 700));
 
     async function detect() {
-      const encoding = await detectTextEncoding(file.stream());
-      console.log("encoding", encoding, mutated);
+      const detectedEncoding = await detectTextEncoding(file.stream());
       if (mutated) {
         return;
       }
       await loadingPromise;
-      if (encoding === "utf-8" || encoding === "shift-jis") {
-        setEncoding(encoding);
+      if (detectedEncoding === "utf-8" || detectedEncoding === "shift-jis") {
+        setEncoding(detectedEncoding);
       }
     }
 
@@ -44,7 +41,7 @@ const FileViewer = ({ file }: Props) => {
     return () => {
       mutated = true;
     };
-  }, [encoding, file]);
+  }, [file]);
 
   const downloadURL = React.useMemo<string>(() => {
     if (!(file instanceof File) || !encoding) {
