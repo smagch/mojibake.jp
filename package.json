@@ -30,6 +30,8 @@
     "@sentry/nextjs": "^6.16.1",
     "@storybook/addon-actions": "6.4.10",
     "@storybook/addons": "6.4.10",
+    "@storybook/builder-webpack5": "^6.4.13",
+    "@storybook/manager-webpack5": "^6.4.13",
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "6.4.10",
     "@svgr/webpack": "^6.2.0",
