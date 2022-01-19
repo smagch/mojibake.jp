@@ -17,7 +17,10 @@
   padding-top: 100px;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 240px;
+  padding-bottom: 320px;
+  background-image: url("/images/mojibake-mask.png");
+  background-position: bottom;
+  background-repeat: no-repeat;
 }
 
 .h1 {
@@ -39,7 +42,7 @@
 .boxContainer {
   margin-left: auto;
   margin-right: auto;
-  margin-top: -180px;
+  margin-top: -240px;
   max-width: 700px;
   padding: 24px;
 }
