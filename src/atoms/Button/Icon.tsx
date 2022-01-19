@@ -12,6 +12,7 @@ import Download from "../../svg/download.svg";
 import ErrorIcon from "../../svg/error.svg";
 import Spinner from "../../svg/spinner.svg";
 import Loop from "../../svg/loop.svg";
+import Clear from "../../svg/clear.svg";
 
 export type IconName =
   | "add"
@@ -25,7 +26,8 @@ export type IconName =
   | "download"
   | "error"
   | "spinner"
-  | "loop";
+  | "loop"
+  | "clear";
 
 type IconMap = {
   [key in IconName]: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -44,6 +46,7 @@ const iconMap: IconMap = {
   error: ErrorIcon,
   spinner: Spinner,
   loop: Loop,
+  clear: Clear,
 };
 
 export type Props = SVGProps<SVGSVGElement> & {
