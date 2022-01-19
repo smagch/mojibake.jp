@@ -10,8 +10,8 @@
     "test": "run-s lint test:*",
     "test:jest": "jest",
     "test:prettier": "prettier --check src",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "fmt": "prettier --write src './*.js'",
+    "lint": "eslint '{src,worker}/**/*.{ts,tsx}'",
+    "fmt": "prettier --write src worker './*.js'",
     "storybook": "start-storybook -p 9009 -s public,src/libs/__tests__/testdata"
   },
   "dependencies": {
