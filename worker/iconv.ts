@@ -69,7 +69,6 @@ async function handler(
           to: outputEncoding,
         });
         controller.enqueue(Uint8Array.from(output));
-        controller.close();
       }
     },
   });
