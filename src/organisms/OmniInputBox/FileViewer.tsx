@@ -46,9 +46,22 @@ const FileViewer = ({ file }: Props) => {
     };
   }, [encoding, file]);
 
-  const dataURL = React.useMemo<string>(() => {
-    return file instanceof File ? URL.createObjectURL(file as File) : "";
-  }, [file]);
+  const downloadURL = React.useMemo<string>(() => {
+    if (!(file instanceof File) || !encoding) {
+      return "";
+    }
+    const url = URL.createObjectURL(file as File);
+    const urlParams = new URLSearchParams();
+    urlParams.set("url", url);
+    urlParams.set("from", encoding);
+    if (encoding === "shift-jis") {
+      urlParams.set("to", "utf-8");
+    } else {
+      urlParams.set("to", "shift-jis");
+    }
+
+    return `/iconv?${urlParams.toString()}`;
+  }, [file, encoding]);
 
   console.log("encoding", encoding);
 
@@ -63,15 +76,17 @@ const FileViewer = ({ file }: Props) => {
           )}
           {file.name}
         </div>
-        <PrimaryLink
-          href={`/file/?url=${encodeURIComponent(dataURL)}`}
-          target="_blank"
-          rel="noreferrer"
-          modifier="iconRight"
-        >
-          ダウンロード
-          <Icon name="download" />
-        </PrimaryLink>
+        {!!downloadURL && (
+          <PrimaryLink
+            href={downloadURL}
+            target="_blank"
+            rel="noreferrer"
+            modifier="iconRight"
+          >
+            ダウンロード
+            <Icon name="download" />
+          </PrimaryLink>
+        )}
       </div>
       {!encoding && <LoadingImage position="absolute" />}
     </div>

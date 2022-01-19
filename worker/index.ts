@@ -1,5 +1,5 @@
 import "./googlefont";
-import { handleFetch } from "./file";
+import { handleFetch } from "./iconv";
 
 declare let self: ServiceWorkerGlobalScope;
 
