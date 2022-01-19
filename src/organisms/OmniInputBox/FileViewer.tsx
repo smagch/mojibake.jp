@@ -54,6 +54,8 @@ const FileViewer = ({ file }: Props) => {
     const urlParams = new URLSearchParams();
     urlParams.set("url", url);
     urlParams.set("from", encoding);
+    urlParams.set("name", file.name);
+
     if (encoding === "shift-jis") {
       urlParams.set("to", "utf-8");
     } else {

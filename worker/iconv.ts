@@ -11,8 +11,9 @@ export function handleFetch(event: FetchEvent) {
   const targetURL = url.searchParams.get("url");
   const sourceEncoding = url.searchParams.get("from");
   const outputEncoding = url.searchParams.get("to");
-  console.log(targetURL, targetURL);
-  if (!targetURL || !sourceEncoding || !outputEncoding) {
+  const filename = url.searchParams.get("name");
+
+  if (!targetURL || !sourceEncoding || !outputEncoding || !filename) {
     // Bad Request
     return new Response("Invalid parameters", {
       status: 400,
@@ -22,26 +23,27 @@ export function handleFetch(event: FetchEvent) {
     });
   }
 
-  event.respondWith(handler(event, targetURL, sourceEncoding, outputEncoding));
+  event.respondWith(
+    handler({
+      targetURL,
+      sourceEncoding,
+      outputEncoding,
+      filename,
+    })
+  );
 }
 
-function getConvertType(encoding: string): string {
-  switch (encoding) {
-    case "shift-jis":
-      return "SJIS";
-    case "utf-8":
-      return "UTF8";
-    default:
-      return "";
-  }
-}
-
-async function handler(
-  event: FetchEvent,
-  targetURL: string,
-  sourceEncoding: string,
-  outputEncoding: string
-) {
+async function handler({
+  targetURL,
+  sourceEncoding,
+  outputEncoding,
+  filename,
+}: {
+  filename: string;
+  targetURL: string;
+  sourceEncoding: string;
+  outputEncoding: string;
+}) {
   const res = await fetch(targetURL);
   if (!res.ok) {
     return res;
@@ -76,7 +78,7 @@ async function handler(
   var response = new Response(stream, {
     headers: {
       "content-type": `text/plain; charset=${outputEncoding}`,
-      "Content-Disposition": `attachment; filename="foobar.txt"`,
+      "Content-Disposition": `attachment; filename="${filename}"`,
     },
   });
 
