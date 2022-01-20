@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PrimaryLink, Icon, Spinner, LoadingImage } from "atoms/Button";
+import { PrimaryButton, Icon, Spinner, LoadingImage } from "atoms/Button";
 import { Encoding, detectTextEncoding } from "libs/encodingutil";
 import styles from "./FileViewer.module.scss";
 
@@ -14,6 +14,8 @@ type Props = {
   // onDownload: () => void;
   // onCopy: () => void;
 };
+
+type DownloadHanlder = () => void;
 
 const FileViewer = ({ file }: Props) => {
   const [encoding, setEncoding] = React.useState<Encoding | null>(null);
@@ -43,26 +45,27 @@ const FileViewer = ({ file }: Props) => {
     };
   }, [file]);
 
-  const downloadURL = React.useMemo<string>(() => {
+  const handleDownload = React.useMemo<undefined | DownloadHanlder>(() => {
     if (!(file instanceof File) || !encoding) {
-      return "";
+      return;
     }
-    const url = URL.createObjectURL(file as File);
-    const urlParams = new URLSearchParams();
-    urlParams.set("url", url);
-    urlParams.set("from", encoding);
-    urlParams.set("name", file.name);
+    return () => {
+      const url = URL.createObjectURL(file as File);
+      const urlParams = new URLSearchParams();
+      urlParams.set("url", url);
+      urlParams.set("from", encoding);
+      urlParams.set("name", file.name);
 
-    if (encoding === "shift-jis") {
-      urlParams.set("to", "utf-8");
-    } else {
-      urlParams.set("to", "shift-jis");
-    }
+      if (encoding === "shift-jis") {
+        urlParams.set("to", "utf-8");
+      } else {
+        urlParams.set("to", "shift-jis");
+      }
 
-    return `/iconv?${urlParams.toString()}`;
+      const downloadURL = `/iconv?${urlParams.toString()}`;
+      window.open(downloadURL, "_blank", "noreferrer");
+    };
   }, [file, encoding]);
-
-  console.log("encoding", encoding);
 
   return (
     <div className={styles.wrapper}>
@@ -75,17 +78,14 @@ const FileViewer = ({ file }: Props) => {
           )}
           {file.name}
         </div>
-        {!!downloadURL && (
-          <PrimaryLink
-            href={downloadURL}
-            target="_blank"
-            rel="noreferrer"
-            modifier="iconRight"
-          >
-            ダウンロード
-            <Icon name="download" />
-          </PrimaryLink>
-        )}
+        <PrimaryButton
+          disabled={!handleDownload}
+          modifier="iconRight"
+          onClick={handleDownload}
+        >
+          ダウンロード
+          <Icon name="download" />
+        </PrimaryButton>
       </div>
       {!encoding && <LoadingImage position="absolute" />}
     </div>
