@@ -27,7 +27,7 @@ type State = {
   encoding: null | string;
   status: "analyzing" | "error" | "success";
   errorMessage: string;
-  previewBody: string[];
+  previewBody: string;
 };
 
 type Action =
@@ -45,19 +45,19 @@ function reducer(state: State, action: Action): State {
         encoding: action.payload,
         status: "success",
         errorMessage: "",
-        previewBody: [],
+        previewBody: "",
       };
     case "SET_ERROR":
       return {
         encoding: null,
         status: "error",
         errorMessage: action.payload,
-        previewBody: [],
+        previewBody: "",
       };
     case "SET_PREVIEW_BODY":
       return {
         ...state,
-        previewBody: action.payload.split("\n"),
+        previewBody: action.payload,
       };
     default:
       return state;
@@ -69,7 +69,7 @@ function reset(): State {
     encoding: null,
     status: "analyzing",
     errorMessage: "",
-    previewBody: [],
+    previewBody: "",
   };
 }
 
@@ -207,11 +207,11 @@ const FileViewer = ({ file, onClear }: Props) => {
         <p className={styles.errorMessage}>{errorMessage}</p>
       )}
       {status === "success" && !!state.previewBody.length && (
-        <div className={styles.viewer}>
-          {state.previewBody.map((section, i) => (
-            <p key={i}>{section}</p>
-          ))}
-        </div>
+        <textarea
+          className={styles.viewer}
+          contentEditable={false}
+          value={state.previewBody}
+        />
       )}
     </div>
   );
