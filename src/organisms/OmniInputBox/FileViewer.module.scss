@@ -71,11 +71,23 @@
   fill: colors.$green;
 }
 
+@keyframes slideFromBottom {
+  from {
+    opacity: 0;
+    transform: translate(-1 * sizes.$input-height * 0.5, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-1 * sizes.$input-height * 0.5, 0);
+  }
+}
+
 .clearButton {
   position: absolute;
   top: -52px;
   left: 50%;
   transform: translateX(-1 * sizes.$input-height * 0.5);
+  animation: slideFromBottom 0.3s ease-in-out;
 }
 
 .errorIcon {
