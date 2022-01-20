@@ -7,7 +7,9 @@ const HeroSection = () => {
   return (
     <>
       <div className={styles.nav}>
-        <Logo />
+        <a href="/">
+          <Logo />
+        </a>
       </div>
       <section className={styles.container}>
         <header className={styles.header}>
