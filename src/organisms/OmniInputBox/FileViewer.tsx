@@ -7,6 +7,7 @@ import {
   LoadingImage,
 } from "atoms/Button";
 import { detectTextEncoding } from "libs/encodingutil";
+import * as Sentry from "@sentry/browser";
 import styles from "./FileViewer.module.scss";
 
 export type InputFile = {
@@ -26,11 +27,13 @@ type State = {
   encoding: null | string;
   status: "analyzing" | "error" | "success";
   errorMessage: string;
+  previewBody: string[];
 };
 
 type Action =
   | { type: "SET_ENCODING"; payload: string }
   | { type: "SET_ERROR"; payload: string }
+  | { type: "SET_PREVIEW_BODY"; payload: string }
   | { type: "RESET" };
 
 function reducer(state: State, action: Action): State {
@@ -42,14 +45,20 @@ function reducer(state: State, action: Action): State {
         encoding: action.payload,
         status: "success",
         errorMessage: "",
+        previewBody: [],
       };
-    case "SET_ERROR": {
+    case "SET_ERROR":
       return {
         encoding: null,
         status: "error",
         errorMessage: action.payload,
+        previewBody: [],
       };
-    }
+    case "SET_PREVIEW_BODY":
+      return {
+        ...state,
+        previewBody: action.payload.split("\n"),
+      };
     default:
       return state;
   }
@@ -60,6 +69,7 @@ function reset(): State {
     encoding: null,
     status: "analyzing",
     errorMessage: "",
+    previewBody: [],
   };
 }
 
@@ -129,6 +139,46 @@ const FileViewer = ({ file, onClear }: Props) => {
     };
   }, [file, encoding]);
 
+  React.useEffect(() => {
+    let unmounted = false;
+
+    async function fetchPreview() {
+      if (status !== "success" || encoding === null) {
+        return;
+      }
+      const url = URL.createObjectURL(file as File);
+      const res = await fetch(url);
+      if (!res.body || unmounted) {
+        return;
+      }
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder(encoding);
+      const loop = true;
+      let body: string = "";
+
+      while (loop) {
+        const { done, value } = await reader.read();
+        if (unmounted) {
+          return;
+        }
+        if (done) {
+          dispatch({ type: "SET_PREVIEW_BODY", payload: body });
+          return;
+        }
+        const decoded = decoder.decode(value, { stream: true });
+        body += decoded;
+      }
+    }
+
+    fetchPreview().catch((err) => {
+      Sentry.captureException(err);
+    });
+
+    return () => {
+      unmounted = true;
+    };
+  }, [status, file, encoding]);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
@@ -155,6 +205,13 @@ const FileViewer = ({ file, onClear }: Props) => {
       )}
       {status === "error" && (
         <p className={styles.errorMessage}>{errorMessage}</p>
+      )}
+      {status === "success" && !!state.previewBody.length && (
+        <div className={styles.viewer}>
+          {state.previewBody.map((section, i) => (
+            <p key={i}>{section}</p>
+          ))}
+        </div>
       )}
     </div>
   );

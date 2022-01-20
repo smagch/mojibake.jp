@@ -9,20 +9,14 @@
   position: relative;
 }
 
-.editor {
+.viewer {
   width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  padding-left: 24px;
-  padding-right: 24px;
-  font-size: 16px;
-  border: 0;
-  outline: 0;
-  line-height: 1.5;
-  flex-grow: 1;
-  border-radius: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+  line-height: 1.4;
+  font-size: 14px;
   color: #414141;
 }
 
