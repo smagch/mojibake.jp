@@ -146,8 +146,14 @@ const FileViewer = ({ file, onClear }: Props) => {
       toast.error("ブラウザが古すぎるためコピーできません。");
       return;
     }
-    navigator.clipboard.writeText(state.previewBody);
-    toast.success("コピーしました。");
+    navigator.clipboard
+      .writeText(state.previewBody)
+      .then(() => {
+        toast.success("コピーしました。");
+      })
+      .catch((err) => {
+        toast.error("コピーに失敗しました。");
+      });
   }, [state]);
 
   React.useEffect(() => {
