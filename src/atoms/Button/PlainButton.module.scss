@@ -32,7 +32,7 @@ $color: #737373;
     }
   }
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: lighten(colors.$hint, 2%);
     color: colors.$primary;
 
@@ -47,6 +47,10 @@ $color: #737373;
     &,
     &:hover {
       color: colors.$helper;
+    }
+
+    > svg {
+      fill: colors.$helper;
     }
   }
 

@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   PrimaryButton,
+  PlainButton,
   Icon,
   IconButton,
   Spinner,
@@ -8,6 +9,7 @@ import {
 } from "atoms/Button";
 import { detectTextEncoding } from "libs/encodingutil";
 import * as Sentry from "@sentry/browser";
+import toast from "react-hot-toast";
 import styles from "./FileViewer.module.scss";
 
 export type InputFile = {
@@ -139,6 +141,15 @@ const FileViewer = ({ file, onClear }: Props) => {
     };
   }, [file, encoding]);
 
+  const handleCopy = React.useCallback(() => {
+    if (!navigator.clipboard) {
+      toast.error("ブラウザが古すぎるためコピーできません。");
+      return;
+    }
+    navigator.clipboard.writeText(state.previewBody);
+    toast.success("コピーしました。");
+  }, [state]);
+
   React.useEffect(() => {
     let unmounted = false;
 
@@ -186,14 +197,24 @@ const FileViewer = ({ file, onClear }: Props) => {
           <StatusIcon status={status} />
           {file.name}
         </div>
-        <PrimaryButton
-          disabled={status !== "success"}
-          modifier="iconRight"
-          onClick={handleDownload}
-        >
-          ダウンロード
-          <Icon name="download" />
-        </PrimaryButton>
+        <div className={styles.actions}>
+          <PlainButton
+            disabled={status !== "success"}
+            modifier="iconRight"
+            onClick={handleCopy}
+          >
+            コピー
+            <Icon name="content_copy" />
+          </PlainButton>
+          <PrimaryButton
+            disabled={status !== "success"}
+            modifier="iconRight"
+            onClick={handleDownload}
+          >
+            ダウンロード
+            <Icon name="download" />
+          </PrimaryButton>
+        </div>
       </div>
       {status === "analyzing" && <LoadingImage position="absolute" />}
       {status === "success" && (
