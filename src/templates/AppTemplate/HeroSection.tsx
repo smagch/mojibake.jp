@@ -10,9 +10,10 @@ const HeroSection = () => {
         <Logo />
       </div>
       <section className={styles.container}>
-        <header>
+        <header className={styles.header}>
           <h1 className={styles.h1}>
-            文字化けしたファイルを元通りにできます。
+            <span>文字化けしたファイルを</span>
+            <span>元通りにできます。</span>
           </h1>
           <p className={styles.description}>
             Mojibake

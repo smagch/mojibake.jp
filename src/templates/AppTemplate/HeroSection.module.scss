@@ -23,6 +23,14 @@
   background-repeat: no-repeat;
 }
 
+.header {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  align-items: center;
+  font-feature-settings: "palt";
+}
+
 .h1 {
   color: #3c2d7c;
   font-weight: 700;
@@ -30,6 +38,10 @@
   line-height: 1.4;
   text-align: center;
   margin-bottom: 24px;
+
+  > span {
+    display: inline-block;
+  }
 }
 
 .description {
