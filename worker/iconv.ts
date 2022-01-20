@@ -1,13 +1,11 @@
 import { convert } from "encoding-japanese";
 
 export function handleFetch(event: FetchEvent) {
-  console.log("fetch event");
   const url = new URL(event.request.url);
   if (url.pathname !== "/iconv") {
     return;
   }
 
-  console.log("fetch with mock");
   const targetURL = url.searchParams.get("url");
   const sourceEncoding = url.searchParams.get("from");
   const outputEncoding = url.searchParams.get("to");
@@ -57,13 +55,10 @@ async function handler({
   const stream = new ReadableStream({
     async pull(controller) {
       const { done, value } = await reader.read();
-      console.log("reader", { done, value });
       if (done) {
         controller.close();
-        console.log("close!!");
       } else {
         const decoded = decoder.decode(value);
-        console.log("decoded", decoded);
         // @ts-ignore
         const output = convert(decoded, {
           type: "array",

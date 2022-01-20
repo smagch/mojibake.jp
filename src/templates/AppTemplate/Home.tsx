@@ -5,37 +5,6 @@ import FAQSection from "organisms/FAQSection";
 import styles from "./Home.module.scss";
 
 const Home: React.FC = () => {
-  const [url, setURL] = React.useState<string>("");
-
-  const handleChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target?.files?.[0];
-      if (!file) {
-        return;
-      }
-      const fileURL = URL.createObjectURL(file);
-      setURL(fileURL);
-    },
-    []
-  );
-
-  React.useEffect(() => {
-    if (!url) {
-      return;
-    }
-    async function fetchFile() {
-      const res = await fetch(`/file/?url=${encodeURIComponent(url)}`);
-      if (!res.ok) {
-        console.error("res", res.status);
-        return;
-      }
-      console.log("ok", await res.text());
-    }
-
-    fetchFile();
-    // setDownloadURL()
-  }, [url]);
-
   return (
     <>
       <Head>

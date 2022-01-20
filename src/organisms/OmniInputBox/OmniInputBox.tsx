@@ -19,7 +19,6 @@ const OmniInputBox = ({ className }: Props) => {
 
   React.useEffect(() => {
     if (droppedFile) {
-      console.log("droppedFile", droppedFile);
       setFile(droppedFile);
     }
   }, [droppedFile]);

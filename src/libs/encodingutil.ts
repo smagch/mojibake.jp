@@ -20,7 +20,6 @@ export async function detectTextEncoding(
     }
     for (const [encoding, decoder] of decoders.entries()) {
       const text = decoder.decode(value, { stream: true });
-      console.log({ encoding, text });
       if (text.includes("�")) {
         decoders.delete(encoding);
       }
