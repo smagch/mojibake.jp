@@ -25,7 +25,8 @@
     "react-dom": "17.0.2",
     "react-hot-toast": "^2.2.0",
     "react-popper": "^2.2.5",
-    "web-streams-polyfill": "^3.2.0"
+    "web-streams-polyfill": "^3.2.0",
+    "workbox-window": "^6.4.2"
   },
   "devDependencies": {
     "@sentry/nextjs": "^6.16.1",
