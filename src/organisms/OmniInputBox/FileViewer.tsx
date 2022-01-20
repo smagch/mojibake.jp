@@ -6,7 +6,7 @@ import {
   Spinner,
   LoadingImage,
 } from "atoms/Button";
-import { Encoding, detectTextEncoding } from "libs/encodingutil";
+import { detectTextEncoding } from "libs/encodingutil";
 import styles from "./FileViewer.module.scss";
 
 export type InputFile = {
@@ -18,17 +18,67 @@ export type InputFile = {
 type Props = {
   file: InputFile;
   onClear: () => void;
-  // onDownload: () => void;
-  // onCopy: () => void;
 };
 
 type DownloadHanlder = () => void;
 
+type State = {
+  encoding: null | string;
+  status: "analyzing" | "error" | "success";
+  errorMessage: string;
+};
+
+type Action =
+  | { type: "SET_ENCODING"; payload: string }
+  | { type: "SET_ERROR"; payload: string }
+  | { type: "RESET" };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "RESET":
+      return reset();
+    case "SET_ENCODING":
+      return {
+        encoding: action.payload,
+        status: "success",
+        errorMessage: "",
+      };
+    case "SET_ERROR": {
+      return {
+        encoding: null,
+        status: "error",
+        errorMessage: action.payload,
+      };
+    }
+    default:
+      return state;
+  }
+}
+
+function reset(): State {
+  return {
+    encoding: null,
+    status: "analyzing",
+    errorMessage: "",
+  };
+}
+
+const StatusIcon = ({ status }: Pick<State, "status">) => {
+  if (status === "analyzing") {
+    return <Spinner className={styles.spinner} />;
+  }
+  if (status === "success") {
+    return <Icon name="check_circle" className={styles.check} />;
+  }
+  return <Icon name="error" className={styles.errorIcon} />;
+};
+
 const FileViewer = ({ file, onClear }: Props) => {
-  const [encoding, setEncoding] = React.useState<Encoding | null>(null);
+  const [state, dispatch] = React.useReducer(reducer, undefined, reset);
+  const { encoding, status, errorMessage } = state;
 
   React.useEffect(() => {
-    setEncoding(null);
+    dispatch({ type: "RESET" });
 
     let mutated = false;
     // show loader at least 0.7 seconds
@@ -40,8 +90,13 @@ const FileViewer = ({ file, onClear }: Props) => {
         return;
       }
       await loadingPromise;
-      if (detectedEncoding === "utf-8" || detectedEncoding === "shift-jis") {
-        setEncoding(detectedEncoding);
+      if (detectedEncoding) {
+        dispatch({ type: "SET_ENCODING", payload: detectedEncoding });
+      } else {
+        dispatch({
+          type: "SET_ERROR",
+          payload: "テキストの解析に失敗しました。",
+        });
       }
     }
 
@@ -78,15 +133,11 @@ const FileViewer = ({ file, onClear }: Props) => {
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <div className={styles.iconTitle}>
-          {encoding === null ? (
-            <Spinner className={styles.spinner} />
-          ) : (
-            <Icon name="check_circle" className={styles.check} />
-          )}
+          <StatusIcon status={status} />
           {file.name}
         </div>
         <PrimaryButton
-          disabled={!handleDownload}
+          disabled={status !== "success"}
           modifier="iconRight"
           onClick={handleDownload}
         >
@@ -94,13 +145,16 @@ const FileViewer = ({ file, onClear }: Props) => {
           <Icon name="download" />
         </PrimaryButton>
       </div>
-      {!encoding && <LoadingImage position="absolute" />}
-      {!!handleDownload && (
+      {status === "analyzing" && <LoadingImage position="absolute" />}
+      {status === "success" && (
         <IconButton
           name="clear"
           className={styles.clearButton}
           onClick={onClear}
         />
+      )}
+      {status === "error" && (
+        <p className={styles.errorMessage}>{errorMessage}</p>
       )}
     </div>
   );

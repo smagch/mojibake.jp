@@ -32,5 +32,5 @@ export async function detectTextEncoding(
     }
   }
 
-  throw new Error("not found");
+  return "";
 }

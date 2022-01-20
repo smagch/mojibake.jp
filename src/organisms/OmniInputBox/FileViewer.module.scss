@@ -63,3 +63,14 @@
   left: 50%;
   transform: translateX(-1 * sizes.$input-height * 0.5);
 }
+
+.errorIcon {
+  fill: colors.$error;
+}
+
+.errorMessage {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 12px;
+  color: colors.$error;
+}
