@@ -16,6 +16,7 @@ const iconNames: IconName[] = [
   "loop",
   "clear",
   "open_in_new",
+  "warning",
 ];
 
 export const Icons: React.FC = () => {
