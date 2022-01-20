@@ -9,7 +9,17 @@
   position: relative;
 }
 
-.viewer {
+.preview {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+}
+
+.textarea {
   width: 100%;
   font-size: 14px;
   box-sizing: border-box;
@@ -103,4 +113,11 @@
   padding-right: 16px;
   padding-top: 12px;
   color: colors.$error;
+}
+
+.sliceNotice {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
 }

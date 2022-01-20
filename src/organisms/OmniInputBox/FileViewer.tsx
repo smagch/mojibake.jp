@@ -11,6 +11,7 @@ import { detectTextEncoding } from "libs/encodingutil";
 import * as Sentry from "@sentry/browser";
 import toast from "react-hot-toast";
 import clsx from "clsx";
+import SliceNotice from "./SliceNotice";
 import styles from "./FileViewer.module.scss";
 
 type Props = {
@@ -26,12 +27,14 @@ type State = {
   errorMessage: string;
   previewBody: string;
   previewSliced?: boolean;
+  sliceAcknowledged?: boolean;
 };
 
 type Action =
   | { type: "SET_ENCODING"; payload: string }
   | { type: "SET_ERROR"; payload: string }
   | { type: "SET_PREVIEW_BODY"; payload: string; previewSliced?: boolean }
+  | { type: "SLICE_ACKNOWLEDGED" }
   | { type: "RESET" };
 
 function reducer(state: State, action: Action): State {
@@ -57,6 +60,12 @@ function reducer(state: State, action: Action): State {
         ...state,
         previewBody: action.payload,
         previewSliced: action.previewSliced,
+        sliceAcknowledged: action.previewSliced ? false : undefined,
+      };
+    case "SLICE_ACKNOWLEDGED":
+      return {
+        ...state,
+        sliceAcknowledged: true,
       };
     default:
       return state;
@@ -156,6 +165,22 @@ const FileViewer = ({ file, onClear }: Props) => {
       });
   }, [state]);
 
+  const handleAcknowledged = React.useCallback(() => {
+    dispatch({ type: "SLICE_ACKNOWLEDGED" });
+  }, []);
+
+  const textAreaClickHanlder = React.useMemo(() => {
+    if (
+      state.sliceAcknowledged === undefined ||
+      state.sliceAcknowledged === true
+    ) {
+      return;
+    }
+    return () => {
+      dispatch({ type: "SLICE_ACKNOWLEDGED" });
+    };
+  }, [state.sliceAcknowledged]);
+
   React.useEffect(() => {
     let unmounted = false;
 
@@ -172,8 +197,8 @@ const FileViewer = ({ file, onClear }: Props) => {
       const decoder = new TextDecoder(encoding);
       const loop = true;
       let body: string = "";
-      // 1MB
-      const MAX_SIZE = 1024 * 1024;
+      // 512KB
+      const MAX_SIZE = 1024 * 512;
       let size = 0;
 
       while (loop) {
@@ -248,15 +273,25 @@ const FileViewer = ({ file, onClear }: Props) => {
         <p className={styles.errorMessage}>{errorMessage}</p>
       )}
       {status === "success" && !!state.previewBody.length && (
-        <textarea
-          className={clsx({
-            [styles.viewer]: true,
-            [styles.sliced]: !!state.previewSliced,
-          })}
-          contentEditable={false}
-          value={state.previewBody}
-          onChange={noop}
-        />
+        <div className={styles.preview}>
+          <textarea
+            className={clsx({
+              [styles.textarea]: true,
+              [styles.sliced]:
+                !!state.previewSliced && !state.sliceAcknowledged,
+            })}
+            readOnly={true}
+            value={state.previewBody}
+            onChange={noop}
+            onClick={textAreaClickHanlder}
+          />
+          {!!state.previewSliced && !state.sliceAcknowledged && (
+            <SliceNotice
+              className={styles.sliceNotice}
+              onClose={handleAcknowledged}
+            />
+          )}
+        </div>
       )}
     </div>
   );
