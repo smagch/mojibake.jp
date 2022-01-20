@@ -238,7 +238,7 @@ const FileViewer = ({ file, onClear }: Props) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <div className={styles.iconTitle}>
+        <div className={clsx(styles.iconTitle, styles[status])}>
           <StatusIcon status={status} />
           {file.name}
         </div>
@@ -261,8 +261,10 @@ const FileViewer = ({ file, onClear }: Props) => {
           </PrimaryButton>
         </div>
       </div>
-      {status === "analyzing" && <LoadingImage position="absolute" />}
-      {status === "success" && (
+      {status === "analyzing" && (
+        <LoadingImage position="absolute" className={styles.loading} />
+      )}
+      {status !== "analyzing" && (
         <IconButton
           name="clear"
           className={styles.clearButton}

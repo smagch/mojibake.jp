@@ -51,13 +51,31 @@
 }
 
 .iconTitle {
-  color: #5f83a5;
+  color: colors.$helper;
   display: flex;
   align-items: center;
   font-weight: 700;
 
   > *:first-child {
     margin-right: 16px;
+  }
+
+  &.analyzing {
+    color: colors.$helper;
+  }
+
+  &.success {
+    color: colors.$green;
+  }
+
+  &.error {
+    color: colors.$error;
+  }
+}
+
+.loading {
+  svg {
+    fill: colors.$helper;
   }
 }
 
@@ -77,7 +95,7 @@
 
 .spinner {
   svg {
-    fill: #5f83a5;
+    fill: colors.$helper;
   }
 }
 
