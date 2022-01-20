@@ -1,9 +1,8 @@
 import * as React from "react";
 import FileViewer from "./FileViewer";
-import { action } from "@storybook/addon-actions";
 
-async function generateFile(): Promise<File> {
-  const res = await fetch("/rashomon.shift-jis.txt");
+async function generateFile(filename: string): Promise<File> {
+  const res = await fetch(filename);
   if (!res.ok) {
     throw new Error("invalid status code:" + res.status);
   }
@@ -11,11 +10,10 @@ async function generateFile(): Promise<File> {
   console.log("blob", blob);
   return new File([blob], "羅生門.txt", {
     type: blob.type,
-    // size: blob.size,
   });
 }
 
-export const Demo = () => {
+const Demo = ({ filename }: { filename: string }) => {
   const [file, setFile] = React.useState<File | null>(null);
 
   React.useEffect(() => {
@@ -25,7 +23,7 @@ export const Demo = () => {
 
     let unmounted = false;
     async function init() {
-      const file = await generateFile();
+      const file = await generateFile(filename);
       setFile(file);
     }
 
@@ -34,7 +32,7 @@ export const Demo = () => {
     return () => {
       unmounted = true;
     };
-  }, [file]);
+  }, [file, filename]);
 
   const handleClear = React.useCallback(() => {
     setFile(null);
@@ -57,6 +55,10 @@ export const Demo = () => {
     </div>
   );
 };
+
+export const SjisSuccess = () => <Demo filename="/rashomon.shift-jis.txt" />;
+export const UTF8Success = () => <Demo filename="/rashomon.utf-8.txt" />;
+export const DetectError = () => <Demo filename="/error.txt" />;
 
 export default {
   title: "organisms/OmniInputBox/FileViewer",
