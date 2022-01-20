@@ -16,6 +16,7 @@ const sentryWebpackPluginOptions = {
 const moduleExports = withPWA({
   pwa: {
     dest: "public",
+    skipWaiting: false,
   },
   // webpack5: false,
   webpack(config) {
