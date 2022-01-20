@@ -1,0 +1,40 @@
+@use "styles/font";
+
+.section {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+
+  > header {
+    margin-bottom: 42px;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > h3 {
+    color: #444338;
+    font-size: 42px;
+    line-height: 1.4;
+    @include font.serif;
+  }
+
+  > p {
+    margin-top: 8px;
+    color: #5b5a50;
+    font-size: 14px;
+  }
+}
+
+.list {
+  > * {
+    margin-bottom: 8px;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}

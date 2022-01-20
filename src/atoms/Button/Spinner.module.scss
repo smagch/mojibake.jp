@@ -1,0 +1,13 @@
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.container {
+  width: 24px;
+  height: 24px;
+  animation: spin 1.2s linear infinite;
+  pointer-events: none;
+  user-select: none;
+}

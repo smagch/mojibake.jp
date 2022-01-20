@@ -3,6 +3,9 @@ const sass = require('sass');
 const globalCSS = sass.compile(path.join(__dirname, '../src/styles/globals.scss')).css.toString();
 
 module.exports = {
+  core: {
+    builder: "webpack5",
+  },
   stories: [
     '../src/**/*.stories.tsx',
   ],
@@ -31,28 +34,19 @@ module.exports = {
     </style>
   `),
   webpackFinal: async (config) => {
+    const pathToInlineSvg = path.resolve(__dirname, '../src/svg');
+    const fileLoaderRule = config.module.rules.find(rule => rule.test.test('.svg'));
+    fileLoaderRule.exclude = pathToInlineSvg;
+
     config.resolve.modules = [
       ...(config.resolve.modules || []),
       path.resolve(__dirname, "../src"),
     ];
-    config.module.rules.unshift({
-      test: /\.svg$/,
-      issuer: {
-        test: /\.(js|ts)x?$/,
-      },
-      use: [
-        {
-          loader: '@svgr/webpack',
-          options: {
-            svgoConfig: {
-              plugins: {
-                removeViewBox: false,
-              },
-            },
-          },
-        },
-        "url-loader",
-      ],
+
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ["@svgr/webpack"],
     });
 
     return config;

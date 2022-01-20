@@ -14,6 +14,7 @@ interface Window {
 declare namespace NodeJS {
   interface ProcessEnv {
     NEXT_PUBLIC_GTM_ID: string;
+    NEXT_PUBLIC_CONTACT_URL: string;
   }
 }
 

@@ -1,0 +1,10 @@
+@use "styles/colors";
+
+.a {
+  color: colors.$primary;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

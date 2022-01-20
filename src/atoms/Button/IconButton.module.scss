@@ -1,0 +1,33 @@
+@use "styles/sizes";
+@use "styles/colors";
+
+.button {
+  width: sizes.$input-height;
+  height: sizes.$input-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  background-color: white;
+  border: 1px solid colors.$helper;
+  outline: none;
+  color: #626262;
+
+  &:hover {
+    background-color: #eee;
+  }
+
+  &:focus,
+  &[aria-expanded="true"] {
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    background-color: #eee;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+}
