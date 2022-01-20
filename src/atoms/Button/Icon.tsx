@@ -13,6 +13,7 @@ import ErrorIcon from "../../svg/error.svg";
 import Spinner from "../../svg/spinner.svg";
 import Loop from "../../svg/loop.svg";
 import Clear from "../../svg/clear.svg";
+import OpenInNew from "../../svg/open_in_new.svg";
 
 export type IconName =
   | "add"
@@ -27,7 +28,8 @@ export type IconName =
   | "error"
   | "spinner"
   | "loop"
-  | "clear";
+  | "clear"
+  | "open_in_new";
 
 type IconMap = {
   [key in IconName]: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -47,6 +49,7 @@ const iconMap: IconMap = {
   spinner: Spinner,
   loop: Loop,
   clear: Clear,
+  open_in_new: OpenInNew,
 };
 
 export type Props = SVGProps<SVGSVGElement> & {
