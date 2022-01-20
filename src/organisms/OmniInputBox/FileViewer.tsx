@@ -10,6 +10,7 @@ import {
 import { detectTextEncoding } from "libs/encodingutil";
 import * as Sentry from "@sentry/browser";
 import toast from "react-hot-toast";
+import clsx from "clsx";
 import styles from "./FileViewer.module.scss";
 
 type Props = {
@@ -24,12 +25,13 @@ type State = {
   status: "analyzing" | "error" | "success";
   errorMessage: string;
   previewBody: string;
+  previewSliced?: boolean;
 };
 
 type Action =
   | { type: "SET_ENCODING"; payload: string }
   | { type: "SET_ERROR"; payload: string }
-  | { type: "SET_PREVIEW_BODY"; payload: string }
+  | { type: "SET_PREVIEW_BODY"; payload: string; previewSliced?: boolean }
   | { type: "RESET" };
 
 function reducer(state: State, action: Action): State {
@@ -54,6 +56,7 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         previewBody: action.payload,
+        previewSliced: action.previewSliced,
       };
     default:
       return state;
@@ -169,6 +172,9 @@ const FileViewer = ({ file, onClear }: Props) => {
       const decoder = new TextDecoder(encoding);
       const loop = true;
       let body: string = "";
+      // 1MB
+      const MAX_SIZE = 1024 * 1024;
+      let size = 0;
 
       while (loop) {
         const { done, value } = await reader.read();
@@ -179,8 +185,19 @@ const FileViewer = ({ file, onClear }: Props) => {
           dispatch({ type: "SET_PREVIEW_BODY", payload: body });
           return;
         }
+
         const decoded = decoder.decode(value, { stream: true });
+        size += value?.byteLength ?? 0;
         body += decoded;
+        if (size > MAX_SIZE) {
+          dispatch({
+            type: "SET_PREVIEW_BODY",
+            payload: body,
+            previewSliced: true,
+          });
+          reader.cancel();
+          return;
+        }
       }
     }
 
@@ -202,7 +219,7 @@ const FileViewer = ({ file, onClear }: Props) => {
         </div>
         <div className={styles.actions}>
           <PlainButton
-            disabled={status !== "success"}
+            disabled={status !== "success" || !!state.previewSliced}
             modifier="iconRight"
             onClick={handleCopy}
           >
@@ -232,7 +249,10 @@ const FileViewer = ({ file, onClear }: Props) => {
       )}
       {status === "success" && !!state.previewBody.length && (
         <textarea
-          className={styles.viewer}
+          className={clsx({
+            [styles.viewer]: true,
+            [styles.sliced]: !!state.previewSliced,
+          })}
           contentEditable={false}
           value={state.previewBody}
           onChange={noop}

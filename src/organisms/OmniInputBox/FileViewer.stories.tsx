@@ -1,19 +1,24 @@
 import * as React from "react";
 import FileViewer from "./FileViewer";
 
-async function generateFile(filename: string): Promise<File> {
+async function generateFile(filename: string, repeat?: number): Promise<File> {
   const res = await fetch(filename);
   if (!res.ok) {
     throw new Error("invalid status code:" + res.status);
   }
   const blob = await res.blob();
-  console.log("blob", blob);
-  return new File([blob], "羅生門.txt", {
+  if (!repeat) {
+    return new File([blob], "羅生門.txt", {
+      type: blob.type,
+    });
+  }
+
+  return new File(new Array(repeat).fill(blob), "羅生門.txt", {
     type: blob.type,
   });
 }
 
-const Demo = ({ filename }: { filename: string }) => {
+const Demo = ({ filename, repeat }: { filename: string; repeat?: number }) => {
   const [file, setFile] = React.useState<File | null>(null);
 
   React.useEffect(() => {
@@ -23,7 +28,7 @@ const Demo = ({ filename }: { filename: string }) => {
 
     let unmounted = false;
     async function init() {
-      const file = await generateFile(filename);
+      const file = await generateFile(filename, repeat);
       setFile(file);
     }
 
@@ -32,7 +37,7 @@ const Demo = ({ filename }: { filename: string }) => {
     return () => {
       unmounted = true;
     };
-  }, [file, filename]);
+  }, [file, filename, repeat]);
 
   const handleClear = React.useCallback(() => {
     setFile(null);
@@ -59,6 +64,9 @@ const Demo = ({ filename }: { filename: string }) => {
 export const SjisSuccess = () => <Demo filename="/rashomon.shift-jis.txt" />;
 export const UTF8Success = () => <Demo filename="/rashomon.utf-8.txt" />;
 export const DetectError = () => <Demo filename="/error.txt" />;
+export const BigUTF8 = () => (
+  <Demo filename="/rashomon.utf-8.txt" repeat={60} />
+);
 
 export default {
   title: "organisms/OmniInputBox/FileViewer",
