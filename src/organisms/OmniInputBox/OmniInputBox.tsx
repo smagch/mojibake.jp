@@ -1,6 +1,6 @@
 import * as React from "react";
 import OmniInputWelcomeView from "./OmniInputWelcomeView";
-import FileViewer, { InputFile } from "./FileViewer";
+import FileViewer from "./FileViewer";
 import clsx from "clsx";
 import styles from "./OmniInputBox.module.scss";
 import { useDndState } from "hooks/userDndState";
@@ -11,7 +11,7 @@ type Props = {
 
 const OmniInputBox = ({ className }: Props) => {
   const { file: droppedFile } = useDndState();
-  const [file, setFile] = React.useState<null | InputFile>(null);
+  const [file, setFile] = React.useState<null | File>(null);
 
   const handleSelctFiles = React.useCallback((files: File[]) => {
     setFile(files[0]);

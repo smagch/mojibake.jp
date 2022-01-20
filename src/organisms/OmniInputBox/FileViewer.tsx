@@ -12,14 +12,8 @@ import * as Sentry from "@sentry/browser";
 import toast from "react-hot-toast";
 import styles from "./FileViewer.module.scss";
 
-export type InputFile = {
-  name: string;
-  size: number;
-  stream: () => ReadableStream;
-};
-
 type Props = {
-  file: InputFile;
+  file: File;
   onClear: () => void;
 };
 
@@ -97,7 +91,7 @@ const FileViewer = ({ file, onClear }: Props) => {
     const loadingPromise = new Promise((resolve) => setTimeout(resolve, 700));
 
     async function detect() {
-      const detectedEncoding = await detectTextEncoding(file.stream());
+      const detectedEncoding = await detectTextEncoding(file.stream() as any);
       if (mutated) {
         return;
       }
