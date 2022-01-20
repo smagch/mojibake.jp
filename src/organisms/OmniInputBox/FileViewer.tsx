@@ -1,5 +1,11 @@
 import * as React from "react";
-import { PrimaryButton, Icon, Spinner, LoadingImage } from "atoms/Button";
+import {
+  PrimaryButton,
+  Icon,
+  IconButton,
+  Spinner,
+  LoadingImage,
+} from "atoms/Button";
 import { Encoding, detectTextEncoding } from "libs/encodingutil";
 import styles from "./FileViewer.module.scss";
 
@@ -11,13 +17,14 @@ export type InputFile = {
 
 type Props = {
   file: InputFile;
+  onClear: () => void;
   // onDownload: () => void;
   // onCopy: () => void;
 };
 
 type DownloadHanlder = () => void;
 
-const FileViewer = ({ file }: Props) => {
+const FileViewer = ({ file, onClear }: Props) => {
   const [encoding, setEncoding] = React.useState<Encoding | null>(null);
 
   React.useEffect(() => {
@@ -88,6 +95,13 @@ const FileViewer = ({ file }: Props) => {
         </PrimaryButton>
       </div>
       {!encoding && <LoadingImage position="absolute" />}
+      {!!handleDownload && (
+        <IconButton
+          name="clear"
+          className={styles.clearButton}
+          onClick={onClear}
+        />
+      )}
     </div>
   );
 };

@@ -23,6 +23,10 @@ const OmniInputBox = ({ className }: Props) => {
     }
   }, [droppedFile]);
 
+  const handleFileClear = React.useCallback(() => {
+    setFile(null);
+  }, []);
+
   return (
     // <div className={styles.wrapper}>
     <div
@@ -38,7 +42,7 @@ const OmniInputBox = ({ className }: Props) => {
       {!file ? (
         <OmniInputWelcomeView onSelectFiles={handleSelctFiles} />
       ) : (
-        <FileViewer file={file} />
+        <FileViewer file={file} onClear={handleFileClear} />
       )}
     </div>
     // </div>

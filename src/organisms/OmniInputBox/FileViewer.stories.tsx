@@ -47,9 +47,10 @@ export const Demo = () => {
         border: "2px solid #4CA09B",
         borderRadius: "8px",
         height: "400px",
+        margin: "100px",
       }}
     >
-      <FileViewer file={file} />
+      <FileViewer file={file} onClear={action("FileViewer.onClear")} />
     </div>
   );
 };

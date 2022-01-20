@@ -56,3 +56,10 @@
 .check {
   fill: colors.$green;
 }
+
+.clearButton {
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  transform: translateX(-1 * sizes.$input-height * 0.5);
+}

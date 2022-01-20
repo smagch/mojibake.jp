@@ -7,6 +7,7 @@ type Props = JSX.IntrinsicElements["button"] & {
   name: IconName;
   title?: string;
   size?: number;
+  className?: string;
 };
 
 const IconButton = React.forwardRef<HTMLButtonElement, Props>(

@@ -4,9 +4,11 @@ import { Provider } from "hooks/userDndState";
 
 export const Demo = () => {
   return (
-    <Provider>
-      <OmniInputBox />
-    </Provider>
+    <div style={{ margin: "100px" }}>
+      <Provider>
+        <OmniInputBox />
+      </Provider>
+    </div>
   );
 };
 

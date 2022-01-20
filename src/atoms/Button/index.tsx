@@ -5,3 +5,4 @@ export { default as Spinner } from "./Spinner";
 export { default as LoadingImage } from "./LoadingImage";
 export { default as PrimaryLink } from "./PrimaryLink";
 export { default as OutboundLink } from "./OutboundLink";
+export { default as IconButton } from "./IconButton";
