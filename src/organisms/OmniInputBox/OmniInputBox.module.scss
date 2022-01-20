@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   outline: 24px solid #fff;
+  overflow: hidden;
 
   &.welcome {
     background-color: #f0fffe;
