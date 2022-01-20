@@ -58,7 +58,7 @@ async function handler({
       if (done) {
         controller.close();
       } else {
-        const decoded = decoder.decode(value);
+        const decoded = decoder.decode(value, { stream: true });
         // @ts-ignore
         const output = convert(decoded, {
           type: "array",
