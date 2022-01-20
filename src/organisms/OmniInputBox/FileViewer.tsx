@@ -79,6 +79,8 @@ const StatusIcon = ({ status }: Pick<State, "status">) => {
   return <Icon name="error" className={styles.errorIcon} />;
 };
 
+const noop = () => {};
+
 const FileViewer = ({ file, onClear }: Props) => {
   const [state, dispatch] = React.useReducer(reducer, undefined, reset);
   const { encoding, status, errorMessage } = state;
@@ -233,6 +235,7 @@ const FileViewer = ({ file, onClear }: Props) => {
           className={styles.viewer}
           contentEditable={false}
           value={state.previewBody}
+          onChange={noop}
         />
       )}
     </div>
