@@ -153,6 +153,7 @@ const FileViewer = ({ file, onClear }: Props) => {
       })
       .catch((err) => {
         toast.error("コピーに失敗しました。");
+        Sentry.captureException(err);
       });
   }, [state]);
 
