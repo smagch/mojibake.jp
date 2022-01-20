@@ -1,5 +1,6 @@
 import * as React from "react";
 import "../styles/globals.scss";
+import { Toaster } from "react-hot-toast";
 import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -12,7 +13,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, []);
 
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Component {...pageProps} />
+      <Toaster />
+    </>
+  );
 }
 
 export default MyApp;
