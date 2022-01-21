@@ -27,6 +27,7 @@ $color: #5f83a5;
 
   > svg {
     fill: $color;
+    flex-shrink: 0;
   }
 
   > *:first-child {
