@@ -48,7 +48,7 @@ class MyDocument extends Document {
 
           <link rel="apple-touch-icon" href="/images/touch-icon.png" />
           <link rel="manifest" href="/manifest.json" />
-          <link rel="shortcut icon" href="/favicon.ico" />
+          <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:url" content="https://www.mojibake.jp" />
           <meta name="twitter:title" content="Mojibake" />
