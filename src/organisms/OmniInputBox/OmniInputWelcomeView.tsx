@@ -40,7 +40,7 @@ const OmniInputWelcomeView = ({ onSelectFiles }: Props) => {
     },
     [onSelectFiles]
   );
-  const stopPropagation = React.useCallback((e: React.MouseEvent) => {
+  const handleLabelClick = React.useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
   }, []);
 
@@ -48,7 +48,7 @@ const OmniInputWelcomeView = ({ onSelectFiles }: Props) => {
     <div className={styles.container}>
       <IconParagraph name="postAdd">ファイルをドラッグ＆ドロップ</IconParagraph>
       <Or />
-      <label className={styles.fileInput} onClick={stopPropagation}>
+      <label className={styles.fileInput} onClick={handleLabelClick}>
         ファイルを選択
         <input
           type="file"

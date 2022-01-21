@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import clsx from "clsx";
 import SliceNotice from "./SliceNotice";
 import styles from "./FileViewer.module.scss";
+import { pushDataLayer } from "libs/datalayer";
 
 type Props = {
   file: File;
@@ -128,7 +129,7 @@ const FileViewer = ({ file, onClear }: Props) => {
   }, [file]);
 
   const handleDownload = React.useMemo<undefined | DownloadHanlder>(() => {
-    if (!(file instanceof File) || !encoding) {
+    if (!encoding) {
       return;
     }
     return () => {
@@ -146,6 +147,10 @@ const FileViewer = ({ file, onClear }: Props) => {
 
       const downloadURL = `/iconv?${urlParams.toString()}`;
       window.open(downloadURL, "_blank", "noreferrer");
+
+      pushDataLayer({
+        event: process.env.NEXT_PUBLIC_GTM_EVENT_DOWNLOAD,
+      });
     };
   }, [file, encoding]);
 
@@ -154,6 +159,10 @@ const FileViewer = ({ file, onClear }: Props) => {
       toast.error("ブラウザが古すぎるためコピーできません。");
       return;
     }
+    pushDataLayer({
+      event: process.env.NEXT_PUBLIC_GTM_EVENT_COPY,
+    });
+
     navigator.clipboard
       .writeText(state.previewBody)
       .then(() => {
