@@ -14,7 +14,8 @@ const HeroSection = () => {
       <section className={styles.container}>
         <header className={styles.header}>
           <h1 className={styles.h1}>
-            <span>文字化けしたファイルを</span>
+            <span>文字化けした</span>
+            <span>ファイルを</span>
             <span>元通りにできます。</span>
           </h1>
           <p className={styles.description}>

@@ -43,7 +43,7 @@
 .h1 {
   color: #3c2d7c;
   font-weight: 700;
-  font-size: 36px;
+  font-size: 32px;
   line-height: 1.2;
   text-align: center;
   margin-bottom: 24px;
@@ -51,13 +51,21 @@
   > span {
     display: inline-block;
   }
+
+  @media (min-width: 600px) {
+    font-size: 36px;
+  }
 }
 
 .description {
   color: #493986;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.6;
   text-align: center;
+
+  @media (min-width: 600px) {
+    font-size: 18px;
+  }
 }
 
 .boxContainer {
