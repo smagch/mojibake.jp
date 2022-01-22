@@ -9,10 +9,6 @@ const Home: React.FC = () => {
     <>
       <Head>
         <title>Mojibake | 文字化けしたファイルの変換ツール</title>
-        <meta
-          name="description"
-          content="Mojibake は、文字化けしたテキストファイルの修復ができる変換ツールです。文字化けの原因を自動的に特定し、正しい日本語に元通り復元します。"
-        />
         <link rel="canonical" href={`${process.env.NEXT_PUBLIC_ORIGIN}/`} />
       </Head>
       <AppTemplate>
