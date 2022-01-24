@@ -15,13 +15,12 @@ import clsx from "clsx";
 import SliceNotice from "./SliceNotice";
 import styles from "./FileViewer.module.scss";
 import { pushDataLayer } from "libs/datalayer";
+import { env } from "process";
 
 type Props = {
   file: File;
   onClear: () => void;
 };
-
-type DownloadHanlder = () => void;
 
 type State = {
   encoding: null | string;
@@ -72,6 +71,7 @@ function reducer(state: State, action: Action): State {
         sliceAcknowledged: true,
       };
     case "SET_DOWNLOAD_URL":
+      console.log("SET_DOWNLOAD_URL", action);
       return {
         ...state,
         downloadURL: action.payload,
@@ -105,6 +105,20 @@ const noop = () => {};
 const FileViewer = ({ file, onClear }: Props) => {
   const [state, dispatch] = React.useReducer(reducer, undefined, reset);
   const { encoding, status, errorMessage, downloadURL } = state;
+  const workerRef = React.useRef<Worker | null>(null);
+
+  React.useEffect(() => {
+    workerRef.current = new Worker(
+      new URL("../../webworkers/convert.ts", import.meta.url)
+    );
+    workerRef.current.onmessage = (event: MessageEvent) => {
+      const downloadURL = event.data;
+      dispatch({ type: "SET_DOWNLOAD_URL", payload: downloadURL });
+    };
+    return () => {
+      workerRef.current?.terminate();
+    };
+  }, [file]);
 
   React.useEffect(() => {
     dispatch({ type: "RESET" });
@@ -143,39 +157,12 @@ const FileViewer = ({ file, onClear }: Props) => {
       if (!encoding) {
         return;
       }
-      const url = URL.createObjectURL(file as File);
-      const urlParams = new URLSearchParams();
-      urlParams.set("url", url);
-      urlParams.set("from", encoding);
-      urlParams.set("name", file.name);
-
-      if (encoding === "shift-jis") {
-        urlParams.set("to", "utf-8");
-      } else {
-        urlParams.set("to", "shift-jis");
-      }
-
-      const workerURL = `/iconv?${urlParams.toString()}`;
-
-      const res = await fetch(workerURL);
-      if (unmounted) {
-        return;
-      }
-
-      if (!res.ok) {
-        toast.error("ダウンロードURLの作成に失敗しました。");
-        return;
-      }
-
-      const blob = await res.blob();
-      if (unmounted) {
-        return;
-      }
-      const downloadFile = new File([blob], file.name, {
-        type: file.type,
+      const fileURL = URL.createObjectURL(file);
+      workerRef.current?.postMessage({
+        url: fileURL,
+        from: encoding,
+        to: encoding === "shift-jis" ? "utf-8" : "shift-jis",
       });
-      const fileDownloadURL = URL.createObjectURL(downloadFile);
-      dispatch({ type: "SET_DOWNLOAD_URL", payload: fileDownloadURL });
     }
 
     fetchDownloadURL().catch((err) => {
@@ -283,6 +270,7 @@ const FileViewer = ({ file, onClear }: Props) => {
     });
   }, []);
 
+  console.log("downloadURL", downloadURL);
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
