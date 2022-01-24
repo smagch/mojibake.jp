@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  PrimaryButton,
   PrimaryLink,
   PlainButton,
   Icon,
@@ -15,7 +14,6 @@ import clsx from "clsx";
 import SliceNotice from "./SliceNotice";
 import styles from "./FileViewer.module.scss";
 import { pushDataLayer } from "libs/datalayer";
-import { env } from "process";
 
 type Props = {
   file: File;
@@ -71,7 +69,6 @@ function reducer(state: State, action: Action): State {
         sliceAcknowledged: true,
       };
     case "SET_DOWNLOAD_URL":
-      console.log("SET_DOWNLOAD_URL", action);
       return {
         ...state,
         downloadURL: action.payload,
@@ -151,8 +148,6 @@ const FileViewer = ({ file, onClear }: Props) => {
   }, [file]);
 
   React.useEffect(() => {
-    let unmounted = false;
-
     async function fetchDownloadURL() {
       if (!encoding) {
         return;
@@ -168,10 +163,6 @@ const FileViewer = ({ file, onClear }: Props) => {
     fetchDownloadURL().catch((err) => {
       Sentry.captureException(err);
     });
-
-    return () => {
-      unmounted = true;
-    };
   }, [file, encoding]);
 
   const handleCopy = React.useCallback(() => {
@@ -270,7 +261,6 @@ const FileViewer = ({ file, onClear }: Props) => {
     });
   }, []);
 
-  console.log("downloadURL", downloadURL);
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
