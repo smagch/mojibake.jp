@@ -36,7 +36,8 @@
     background-color: lighten(colors.$primary, 8%);
   }
 
-  &[disabled] {
+  &[disabled],
+  &.disabled {
     cursor: not-allowed;
 
     &,

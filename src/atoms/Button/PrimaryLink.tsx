@@ -5,12 +5,13 @@ import styles from "./PrimaryButton.module.scss";
 type Props = JSX.IntrinsicElements["a"] & {
   modifier?: "iconRight";
   size?: "large";
+  disabled?: boolean;
 };
 
 export const PrimaryLink = React.forwardRef<HTMLAnchorElement, Props>(
   (props: Props, ref) => {
     // eslint-disable-next-line react/prop-types
-    const { className, modifier, size, ...otherProps } = props;
+    const { className, modifier, size, disabled, ...otherProps } = props;
     return (
       <a
         ref={ref}
@@ -18,6 +19,7 @@ export const PrimaryLink = React.forwardRef<HTMLAnchorElement, Props>(
           styles.button,
           modifier && styles[modifier],
           size && styles.large,
+          disabled && styles.disabled,
           className
         )}
         {...otherProps}

@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   PrimaryButton,
+  PrimaryLink,
   PlainButton,
   Icon,
   IconButton,
@@ -29,6 +30,7 @@ type State = {
   previewBody: string;
   previewSliced?: boolean;
   sliceAcknowledged?: boolean;
+  downloadURL?: string;
 };
 
 type Action =
@@ -36,6 +38,7 @@ type Action =
   | { type: "SET_ERROR"; payload: string }
   | { type: "SET_PREVIEW_BODY"; payload: string; previewSliced?: boolean }
   | { type: "SLICE_ACKNOWLEDGED" }
+  | { type: "SET_DOWNLOAD_URL"; payload: string }
   | { type: "RESET" };
 
 function reducer(state: State, action: Action): State {
@@ -68,6 +71,11 @@ function reducer(state: State, action: Action): State {
         ...state,
         sliceAcknowledged: true,
       };
+    case "SET_DOWNLOAD_URL":
+      return {
+        ...state,
+        downloadURL: action.payload,
+      };
     default:
       return state;
   }
@@ -96,7 +104,7 @@ const noop = () => {};
 
 const FileViewer = ({ file, onClear }: Props) => {
   const [state, dispatch] = React.useReducer(reducer, undefined, reset);
-  const { encoding, status, errorMessage } = state;
+  const { encoding, status, errorMessage, downloadURL } = state;
 
   React.useEffect(() => {
     dispatch({ type: "RESET" });
@@ -128,11 +136,13 @@ const FileViewer = ({ file, onClear }: Props) => {
     };
   }, [file]);
 
-  const handleDownload = React.useMemo<undefined | DownloadHanlder>(() => {
-    if (!encoding) {
-      return;
-    }
-    return () => {
+  React.useEffect(() => {
+    let unmounted = false;
+
+    async function fetchDownloadURL() {
+      if (!encoding) {
+        return;
+      }
       const url = URL.createObjectURL(file as File);
       const urlParams = new URLSearchParams();
       urlParams.set("url", url);
@@ -145,12 +155,35 @@ const FileViewer = ({ file, onClear }: Props) => {
         urlParams.set("to", "shift-jis");
       }
 
-      const downloadURL = `/iconv?${urlParams.toString()}`;
-      window.open(downloadURL, "_blank", "noreferrer");
+      const workerURL = `/iconv?${urlParams.toString()}`;
 
-      pushDataLayer({
-        event: process.env.NEXT_PUBLIC_GTM_EVENT_DOWNLOAD,
+      const res = await fetch(workerURL);
+      if (unmounted) {
+        return;
+      }
+
+      if (!res.ok) {
+        toast.error("ダウンロードURLの作成に失敗しました。");
+        return;
+      }
+
+      const blob = await res.blob();
+      if (unmounted) {
+        return;
+      }
+      const downloadFile = new File([blob], file.name, {
+        type: file.type,
       });
+      const fileDownloadURL = URL.createObjectURL(downloadFile);
+      dispatch({ type: "SET_DOWNLOAD_URL", payload: fileDownloadURL });
+    }
+
+    fetchDownloadURL().catch((err) => {
+      Sentry.captureException(err);
+    });
+
+    return () => {
+      unmounted = true;
     };
   }, [file, encoding]);
 
@@ -244,6 +277,12 @@ const FileViewer = ({ file, onClear }: Props) => {
     };
   }, [status, file, encoding]);
 
+  const handleDownloadClick = React.useCallback(() => {
+    pushDataLayer({
+      event: process.env.NEXT_PUBLIC_GTM_EVENT_DOWNLOAD,
+    });
+  }, []);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
@@ -260,14 +299,16 @@ const FileViewer = ({ file, onClear }: Props) => {
             コピー
             <Icon name="content_copy" />
           </PlainButton>
-          <PrimaryButton
-            disabled={status !== "success"}
+          <PrimaryLink
+            href={downloadURL}
+            disabled={!downloadURL}
             modifier="iconRight"
-            onClick={handleDownload}
+            download={file.name}
+            onClick={!!downloadURL ? handleDownloadClick : undefined}
           >
             ダウンロード
             <Icon name="download" />
-          </PrimaryButton>
+          </PrimaryLink>
         </div>
       </div>
       {status === "analyzing" && (
