@@ -31,7 +31,7 @@ $line-height: 56px;
     top: 0;
     right: 0;
     transform-origin: center;
-    transition: 200ms linear;
+    transition: transform 0.3s;
   }
 
   &[open] > .summary::after {
@@ -50,11 +50,19 @@ $line-height: 56px;
   padding-left: 16px;
   color: #4e4c3f;
 
+  &:focus {
+    outline: 0;
+  }
+
   &::marker {
     display: none;
   }
 
   & + * {
     margin-top: 8px;
+  }
+
+  &::-webkit-details-marker {
+    display: none;
   }
 }
