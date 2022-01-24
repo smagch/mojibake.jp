@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-  PrimaryButton,
+  PrimaryLink,
   PlainButton,
   Icon,
   IconButton,
@@ -20,8 +20,6 @@ type Props = {
   onClear: () => void;
 };
 
-type DownloadHanlder = () => void;
-
 type State = {
   encoding: null | string;
   status: "analyzing" | "error" | "success";
@@ -29,6 +27,7 @@ type State = {
   previewBody: string;
   previewSliced?: boolean;
   sliceAcknowledged?: boolean;
+  downloadURL?: string;
 };
 
 type Action =
@@ -36,6 +35,7 @@ type Action =
   | { type: "SET_ERROR"; payload: string }
   | { type: "SET_PREVIEW_BODY"; payload: string; previewSliced?: boolean }
   | { type: "SLICE_ACKNOWLEDGED" }
+  | { type: "SET_DOWNLOAD_URL"; payload: string }
   | { type: "RESET" };
 
 function reducer(state: State, action: Action): State {
@@ -68,6 +68,11 @@ function reducer(state: State, action: Action): State {
         ...state,
         sliceAcknowledged: true,
       };
+    case "SET_DOWNLOAD_URL":
+      return {
+        ...state,
+        downloadURL: action.payload,
+      };
     default:
       return state;
   }
@@ -96,7 +101,21 @@ const noop = () => {};
 
 const FileViewer = ({ file, onClear }: Props) => {
   const [state, dispatch] = React.useReducer(reducer, undefined, reset);
-  const { encoding, status, errorMessage } = state;
+  const { encoding, status, errorMessage, downloadURL } = state;
+  const workerRef = React.useRef<Worker | null>(null);
+
+  React.useEffect(() => {
+    workerRef.current = new Worker(
+      new URL("../../webworkers/convert.ts", import.meta.url)
+    );
+    workerRef.current.onmessage = (event: MessageEvent) => {
+      const downloadURL = event.data;
+      dispatch({ type: "SET_DOWNLOAD_URL", payload: downloadURL });
+    };
+    return () => {
+      workerRef.current?.terminate();
+    };
+  }, [file]);
 
   React.useEffect(() => {
     dispatch({ type: "RESET" });
@@ -128,30 +147,22 @@ const FileViewer = ({ file, onClear }: Props) => {
     };
   }, [file]);
 
-  const handleDownload = React.useMemo<undefined | DownloadHanlder>(() => {
-    if (!encoding) {
-      return;
-    }
-    return () => {
-      const url = URL.createObjectURL(file as File);
-      const urlParams = new URLSearchParams();
-      urlParams.set("url", url);
-      urlParams.set("from", encoding);
-      urlParams.set("name", file.name);
-
-      if (encoding === "shift-jis") {
-        urlParams.set("to", "utf-8");
-      } else {
-        urlParams.set("to", "shift-jis");
+  React.useEffect(() => {
+    async function fetchDownloadURL() {
+      if (!encoding) {
+        return;
       }
-
-      const downloadURL = `/iconv?${urlParams.toString()}`;
-      window.open(downloadURL, "_blank", "noreferrer");
-
-      pushDataLayer({
-        event: process.env.NEXT_PUBLIC_GTM_EVENT_DOWNLOAD,
+      const fileURL = URL.createObjectURL(file);
+      workerRef.current?.postMessage({
+        url: fileURL,
+        from: encoding,
+        to: encoding === "shift-jis" ? "utf-8" : "shift-jis",
       });
-    };
+    }
+
+    fetchDownloadURL().catch((err) => {
+      Sentry.captureException(err);
+    });
   }, [file, encoding]);
 
   const handleCopy = React.useCallback(() => {
@@ -244,6 +255,12 @@ const FileViewer = ({ file, onClear }: Props) => {
     };
   }, [status, file, encoding]);
 
+  const handleDownloadClick = React.useCallback(() => {
+    pushDataLayer({
+      event: process.env.NEXT_PUBLIC_GTM_EVENT_DOWNLOAD,
+    });
+  }, []);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
@@ -260,14 +277,16 @@ const FileViewer = ({ file, onClear }: Props) => {
             コピー
             <Icon name="content_copy" />
           </PlainButton>
-          <PrimaryButton
-            disabled={status !== "success"}
+          <PrimaryLink
+            href={downloadURL}
+            disabled={!downloadURL}
             modifier="iconRight"
-            onClick={handleDownload}
+            download={file.name}
+            onClick={!!downloadURL ? handleDownloadClick : undefined}
           >
             ダウンロード
             <Icon name="download" />
-          </PrimaryButton>
+          </PrimaryLink>
         </div>
       </div>
       {status === "analyzing" && (

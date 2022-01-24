@@ -14,6 +14,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  font-size: 14px;
 
   > * {
     margin-right: 8px;
@@ -35,7 +36,8 @@
     background-color: lighten(colors.$primary, 8%);
   }
 
-  &[disabled] {
+  &[disabled],
+  &.disabled {
     cursor: not-allowed;
 
     &,
