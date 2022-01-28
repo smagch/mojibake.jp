@@ -1,5 +1,5 @@
 module.exports = {
-  siteUrl: "https://wwww.mojibake.jp",
+  siteUrl: "https://www.mojibake.jp",
   generateRobotsTxt: true,
   changefreq: "weekly",
 };
