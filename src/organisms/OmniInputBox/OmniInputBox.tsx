@@ -6,10 +6,21 @@ import styles from "./OmniInputBox.module.scss";
 import { useDndState } from "hooks/userDndState";
 import toast from "react-hot-toast";
 import { pushDataLayer } from "libs/datalayer";
+import { cutFileExtension } from "libs/fileutil";
 
 type Props = {
   className?: string;
 };
+
+function getDataLayerVariables(file: File): {
+  fileExtension: string;
+  fileSize: number;
+} {
+  return {
+    fileExtension: cutFileExtension(file.name),
+    fileSize: file.size,
+  };
+}
 
 const OmniInputBox = ({ className }: Props) => {
   const { file: droppedFile } = useDndState();
@@ -20,11 +31,12 @@ const OmniInputBox = ({ className }: Props) => {
     if (files.length > 1) {
       toast("ファイルは一つしか変換できません。");
     }
+    if (files.length === 0) {
+      return;
+    }
     pushDataLayer({
       event: process.env.NEXT_PUBLIC_GTM_EVENT_FILE_SELECT,
-      // event data TODO
-      // 1. extension
-      // 2. file size
+      ...getDataLayerVariables(files[0]),
     });
   }, []);
 
@@ -33,6 +45,7 @@ const OmniInputBox = ({ className }: Props) => {
       setFile(droppedFile);
       pushDataLayer({
         event: process.env.NEXT_PUBLIC_GTM_EVENT_FILE_DROP,
+        ...getDataLayerVariables(droppedFile),
       });
     }
   }, [droppedFile]);
