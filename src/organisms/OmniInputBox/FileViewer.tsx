@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import clsx from "clsx";
 import SliceNotice from "./SliceNotice";
 import styles from "./FileViewer.module.scss";
-import { pushDataLayer } from "libs/datalayer";
+import { pushDataLayer, getDataLayerVariables } from "libs/datalayer";
 
 type Props = {
   file: File;
@@ -139,6 +139,7 @@ const FileViewer = ({ file, onClear }: Props) => {
         });
         pushDataLayer({
           event: process.env.NEXT_PUBLIC_GTM_EVENT_DETECT_ERROR,
+          ...getDataLayerVariables(file),
         });
       }
     }
@@ -175,6 +176,7 @@ const FileViewer = ({ file, onClear }: Props) => {
     }
     pushDataLayer({
       event: process.env.NEXT_PUBLIC_GTM_EVENT_COPY,
+      ...getDataLayerVariables(file),
     });
 
     navigator.clipboard
@@ -186,7 +188,7 @@ const FileViewer = ({ file, onClear }: Props) => {
         toast.error("コピーに失敗しました。");
         Sentry.captureException(err);
       });
-  }, [state]);
+  }, [state, file]);
 
   const handleAcknowledged = React.useCallback(() => {
     dispatch({ type: "SLICE_ACKNOWLEDGED" });
@@ -261,8 +263,9 @@ const FileViewer = ({ file, onClear }: Props) => {
   const handleDownloadClick = React.useCallback(() => {
     pushDataLayer({
       event: process.env.NEXT_PUBLIC_GTM_EVENT_DOWNLOAD,
+      ...getDataLayerVariables(file),
     });
-  }, []);
+  }, [file]);
 
   return (
     <div className={styles.wrapper}>

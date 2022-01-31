@@ -5,22 +5,11 @@ import clsx from "clsx";
 import styles from "./OmniInputBox.module.scss";
 import { useDndState } from "hooks/userDndState";
 import toast from "react-hot-toast";
-import { pushDataLayer } from "libs/datalayer";
-import { cutFileExtension } from "libs/fileutil";
+import { pushDataLayer, getDataLayerVariables } from "libs/datalayer";
 
 type Props = {
   className?: string;
 };
-
-function getDataLayerVariables(file: File): {
-  fileExtension: string;
-  fileSize: number;
-} {
-  return {
-    fileExtension: cutFileExtension(file.name),
-    fileSize: file.size,
-  };
-}
 
 const OmniInputBox = ({ className }: Props) => {
   const { file: droppedFile } = useDndState();
