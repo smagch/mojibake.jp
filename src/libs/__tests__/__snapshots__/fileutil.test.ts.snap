@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cutFileExtension("") 1`] = `""`;
+
+exports[`cutFileExtension("bar") 1`] = `""`;
+
+exports[`cutFileExtension("foo.csv") 1`] = `".csv"`;
+
+exports[`cutFileExtension("foo/bar/hoge") 1`] = `""`;
+
+exports[`cutFileExtension("foo/bar/hoge.txt") 1`] = `".txt"`;
