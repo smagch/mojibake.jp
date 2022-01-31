@@ -16,6 +16,21 @@ const getDescription = (): string =>
   "Mojibake は、文字化けしたテキストファイルの修復ができる変換ツールです。" +
   "文字化けの原因を自動的に特定し、正しい日本語に元通り復元します。";
 
+const getRichResult = () => ({
+  __html: `
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Mojibake",
+      "applicationCategory": "UtilitiesApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      }
+    }
+  `,
+});
+
 class MyDocument extends Document {
   render() {
     const description = getDescription();
@@ -66,6 +81,10 @@ class MyDocument extends Document {
           <meta
             property="og:image"
             content="https://www.mojibake.jp/images/social-image-home.jpg"
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={getRichResult()}
           />
         </Head>
         <body>

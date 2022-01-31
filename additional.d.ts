@@ -19,6 +19,8 @@ declare namespace NodeJS {
     NEXT_PUBLIC_GTM_EVENT_COPY: string;
     NEXT_PUBLIC_GTM_EVENT_FILE_SELECT: string;
     NEXT_PUBLIC_GTM_EVENT_FILE_DROP: string;
+    NEXT_PUBLIC_GTM_EVENT_FILE_CLEAR: string;
+    NEXT_PUBLIC_GTM_EVENT_DETECT_ERROR: string;
     NEXT_PUBLIC_ORIGIN: string;
   }
 }
