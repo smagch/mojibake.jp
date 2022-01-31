@@ -52,6 +52,9 @@ const OmniInputBox = ({ className }: Props) => {
 
   const handleFileClear = React.useCallback(() => {
     setFile(null);
+    pushDataLayer({
+      event: process.env.NEXT_PUBLIC_GTM_EVENT_FILE_CLEAR,
+    });
   }, []);
 
   return (

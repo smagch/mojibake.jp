@@ -137,6 +137,9 @@ const FileViewer = ({ file, onClear }: Props) => {
           type: "SET_ERROR",
           payload: "テキストの解析に失敗しました。",
         });
+        pushDataLayer({
+          event: process.env.NEXT_PUBLIC_GTM_EVENT_DETECT_ERROR,
+        });
       }
     }
 
