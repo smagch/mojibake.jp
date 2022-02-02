@@ -8,7 +8,9 @@ const Home: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Mojibake | 文字化けしたファイルの変換ツール</title>
+        <title>
+          文字化けしたテキストが元通り。エクセルのファイルもOKです。
+        </title>
         <link rel="canonical" href={`${process.env.NEXT_PUBLIC_ORIGIN}/`} />
       </Head>
       <AppTemplate>
