@@ -14,7 +14,8 @@ const initializeDataLayer = () => ({
 
 const getDescription = (): string =>
   "Mojibake は、文字化けしたテキストファイルの修復ができる変換ツールです。" +
-  "文字化けの原因を自動的に特定し、正しい日本語に元通り復元します。";
+  "文字化けの直し方がわからなければ、ぜひお試しください。" +
+  "CSV ファイルの文字コード解読にも対応しておりますので、エクセルの文字化けに対しても有効です。";
 
 const getRichResult = () => ({
   __html: `
