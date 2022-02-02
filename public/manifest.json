@@ -1,6 +1,7 @@
 {
   "name": "Mojibake",
   "short_name": "Mojibake",
+  "description": "Mojibake は、文字化けしたテキストファイルの修復ができる変換ツールです。文字化けしたファイルを元通りにできます。エクセルファイルもOK。",
   "icons": [
     {
       "src": "favicon.ico",
