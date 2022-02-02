@@ -269,7 +269,7 @@ const FileViewer = ({ file, onClear }: Props) => {
       <div className={styles.header}>
         <div className={clsx(styles.iconTitle, styles[status])}>
           <StatusIcon status={status} />
-          {file.name}
+          <span>{file.name}</span>
         </div>
         <div className={styles.actions}>
           <PlainButton

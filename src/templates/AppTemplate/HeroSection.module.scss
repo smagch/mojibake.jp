@@ -1,3 +1,5 @@
+@use "styles/colors";
+
 .nav {
   height: 72px;
   display: flex;
@@ -18,13 +20,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 100px;
+  padding-top: 60px;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 320px;
+  padding-bottom: 300px;
   background-image: url("/images/mojibake-mask.png");
   background-position: bottom;
   background-repeat: no-repeat;
+
+  @media (min-width: 600px) {
+    padding-top: 80px;
+  }
 
   @media (min-width: 1232px) {
     margin-left: auto;
@@ -35,7 +41,6 @@
 .header {
   display: flex;
   flex-direction: column;
-  max-width: 600px;
   align-items: center;
   font-feature-settings: "palt";
 }
@@ -47,6 +52,7 @@
   line-height: 1.2;
   text-align: center;
   margin-bottom: 24px;
+  max-width: 700px;
 
   > span {
     display: inline-block;
@@ -62,10 +68,45 @@
   font-size: 16px;
   line-height: 1.6;
   text-align: center;
+  max-width: 700px;
+
+  & + & {
+    margin-top: 0.6em;
+  }
 
   @media (min-width: 600px) {
     font-size: 18px;
   }
+}
+
+.description + .notice {
+  margin-top: 0.8em;
+}
+
+.notice {
+  color: colors.$helper;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 700px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+
+  > svg {
+    fill: colors.$helper;
+    margin-right: 8px;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  @media (min-width: 600px) {
+    color: colors.$helper;
+    font-size: 16px;
+  }
+}
+
+.notice + .notice {
+  margin-top: 0.2em;
 }
 
 .boxContainer {

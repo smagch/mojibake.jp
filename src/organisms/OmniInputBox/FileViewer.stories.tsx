@@ -8,9 +8,13 @@ async function generateFile(filename: string, repeat?: number): Promise<File> {
   }
   const blob = await res.blob();
   if (!repeat) {
-    return new File([blob], "羅生門.txt", {
-      type: blob.type,
-    });
+    return new File(
+      [blob],
+      "羅生門0123456544565432142533214253323234554328453921450312.txt",
+      {
+        type: blob.type,
+      }
+    );
   }
 
   return new File(new Array(repeat).fill(blob), "羅生門.txt", {
@@ -53,7 +57,7 @@ const Demo = ({ filename, repeat }: { filename: string; repeat?: number }) => {
         border: "2px solid #4CA09B",
         borderRadius: "8px",
         height: "400px",
-        margin: "100px",
+        margin: "100px 8px",
       }}
     >
       <FileViewer file={file} onClear={handleClear} />

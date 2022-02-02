@@ -15,6 +15,7 @@ import Loop from "../../svg/loop.svg";
 import Clear from "../../svg/clear.svg";
 import OpenInNew from "../../svg/open_in_new.svg";
 import Warning from "../../svg/warning.svg";
+import LightBulb from "../../svg/lightbulb.svg";
 
 export type IconName =
   | "add"
@@ -31,7 +32,8 @@ export type IconName =
   | "loop"
   | "clear"
   | "open_in_new"
-  | "warning";
+  | "warning"
+  | "lightbulb";
 
 type IconMap = {
   [key in IconName]: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -53,6 +55,7 @@ const iconMap: IconMap = {
   clear: Clear,
   open_in_new: OpenInNew,
   warning: Warning,
+  lightbulb: LightBulb,
 };
 
 export type Props = SVGProps<SVGSVGElement> & {
