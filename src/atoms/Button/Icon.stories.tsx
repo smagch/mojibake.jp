@@ -17,6 +17,7 @@ const iconNames: IconName[] = [
   "clear",
   "open_in_new",
   "warning",
+  "lightbulb",
 ];
 
 export const Icons: React.FC = () => {
