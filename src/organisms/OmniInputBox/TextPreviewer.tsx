@@ -1,13 +1,14 @@
 import * as React from "react";
-import clsx from "clsx";
 import SliceNotice from "./SliceNotice";
 import * as Sentry from "@sentry/browser";
 import { LoadingImage } from "atoms/Button";
 import toast from "react-hot-toast";
 import { pushDataLayer } from "libs/datalayer";
+import clsx from "clsx";
 import styles from "./TextPreviewer.module.scss";
 
 type Props = {
+  className?: string;
   file: File;
   encoding: string;
 };
@@ -60,7 +61,7 @@ type Handle = {
 };
 
 const TextPreviewer = React.forwardRef<Handle, Props>(
-  ({ file, encoding }: Props, ref: React.ForwardedRef<Handle>) => {
+  ({ file, encoding, className }: Props, ref: React.ForwardedRef<Handle>) => {
     const [state, dispatch] = React.useReducer(reducer, undefined, reset);
 
     const handleAcknowledged = React.useCallback(() => {
@@ -156,7 +157,7 @@ const TextPreviewer = React.forwardRef<Handle, Props>(
     }));
 
     return (
-      <div className={styles.preview}>
+      <div className={clsx(styles.preview, className)}>
         <textarea
           className={clsx({
             [styles.textarea]: true,
