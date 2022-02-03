@@ -3,6 +3,8 @@ import clsx from "clsx";
 import SliceNotice from "./SliceNotice";
 import * as Sentry from "@sentry/browser";
 import { LoadingImage } from "atoms/Button";
+import toast from "react-hot-toast";
+import { pushDataLayer } from "libs/datalayer";
 import styles from "./TextPreviewer.module.scss";
 
 type Props = {
@@ -52,97 +54,131 @@ function reset(): State {
 
 const noop = () => {};
 
-const TextPreviewer = ({ file, encoding }: Props) => {
-  const [state, dispatch] = React.useReducer(reducer, undefined, reset);
+type Handle = {
+  copyText: () => void;
+  previewSliced: () => boolean;
+};
 
-  const handleAcknowledged = React.useCallback(() => {
-    dispatch({ type: "SLICE_ACKNOWLEDGED" });
-  }, []);
+const TextPreviewer = React.forwardRef<Handle, Props>(
+  ({ file, encoding }: Props, ref: React.ForwardedRef<Handle>) => {
+    const [state, dispatch] = React.useReducer(reducer, undefined, reset);
 
-  const textAreaClickHanlder = React.useMemo(() => {
-    if (
-      state.sliceAcknowledged === undefined ||
-      state.sliceAcknowledged === true
-    ) {
-      return;
-    }
-    return () => {
+    const handleAcknowledged = React.useCallback(() => {
       dispatch({ type: "SLICE_ACKNOWLEDGED" });
-    };
-  }, [state.sliceAcknowledged]);
+    }, []);
 
-  React.useEffect(() => {
-    let unmounted = false;
-
-    async function fetchPreview() {
-      const url = URL.createObjectURL(file);
-      const res = await fetch(url);
-      if (!res.body || unmounted) {
+    const textAreaClickHanlder = React.useMemo(() => {
+      if (
+        state.sliceAcknowledged === undefined ||
+        state.sliceAcknowledged === true
+      ) {
         return;
       }
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder(encoding);
-      const loop = true;
-      let body: string = "";
-      // 512KB
-      const MAX_SIZE = 1024 * 512;
-      let size = 0;
+      return () => {
+        dispatch({ type: "SLICE_ACKNOWLEDGED" });
+      };
+    }, [state.sliceAcknowledged]);
 
-      while (loop) {
-        const { done, value } = await reader.read();
-        if (unmounted) {
+    React.useEffect(() => {
+      let unmounted = false;
+
+      async function fetchPreview() {
+        const url = URL.createObjectURL(file);
+        const res = await fetch(url);
+        if (!res.body || unmounted) {
           return;
         }
-        if (done) {
-          dispatch({ type: "SET_PREVIEW_BODY", payload: body });
-          return;
-        }
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder(encoding);
+        const loop = true;
+        let body: string = "";
+        // 512KB
+        const MAX_SIZE = 1024 * 512;
+        let size = 0;
 
-        const decoded = decoder.decode(value, { stream: true });
-        size += value?.byteLength ?? 0;
-        body += decoded;
-        if (size > MAX_SIZE) {
-          dispatch({
-            type: "SET_PREVIEW_BODY",
-            payload: body,
-            previewSliced: true,
-          });
-          reader.cancel();
-          return;
+        while (loop) {
+          const { done, value } = await reader.read();
+          if (unmounted) {
+            return;
+          }
+          if (done) {
+            dispatch({ type: "SET_PREVIEW_BODY", payload: body });
+            return;
+          }
+
+          const decoded = decoder.decode(value, { stream: true });
+          size += value?.byteLength ?? 0;
+          body += decoded;
+          if (size > MAX_SIZE) {
+            dispatch({
+              type: "SET_PREVIEW_BODY",
+              payload: body,
+              previewSliced: true,
+            });
+            reader.cancel();
+            return;
+          }
         }
       }
-    }
 
-    fetchPreview().catch((err) => {
-      Sentry.captureException(err);
-    });
+      fetchPreview().catch((err) => {
+        Sentry.captureException(err);
+      });
 
-    return () => {
-      unmounted = true;
-    };
-  }, [file, encoding]);
+      return () => {
+        unmounted = true;
+      };
+    }, [file, encoding]);
 
-  return (
-    <div className={styles.preview}>
-      <textarea
-        className={clsx({
-          [styles.textarea]: true,
-          [styles.sliced]: !!state.previewSliced && !state.sliceAcknowledged,
-        })}
-        readOnly={true}
-        value={state.previewBody}
-        onChange={noop}
-        onClick={textAreaClickHanlder}
-      />
-      {!state.previewBody && <LoadingImage position="absolute" />}
-      {!!state.previewSliced && !state.sliceAcknowledged && (
-        <SliceNotice
-          className={styles.sliceNotice}
-          onClose={handleAcknowledged}
+    React.useImperativeHandle(ref, () => ({
+      copyText: () => {
+        if (!navigator.clipboard) {
+          toast.error("ブラウザが古すぎるためコピーできません。");
+          return;
+        }
+        pushDataLayer({
+          event: process.env.NEXT_PUBLIC_GTM_EVENT_COPY,
+        });
+
+        navigator.clipboard
+          .writeText(state.previewBody)
+          .then(() => {
+            toast.success("コピーしました。");
+          })
+          .catch((err) => {
+            toast.error("コピーに失敗しました。");
+            Sentry.captureException(err);
+          });
+      },
+      previewSliced: () => {
+        return !!state.previewSliced;
+      },
+    }));
+
+    return (
+      <div className={styles.preview}>
+        <textarea
+          className={clsx({
+            [styles.textarea]: true,
+            [styles.sliced]: !!state.previewSliced && !state.sliceAcknowledged,
+          })}
+          readOnly={true}
+          value={state.previewBody}
+          onChange={noop}
+          onClick={textAreaClickHanlder}
         />
-      )}
-    </div>
-  );
-};
+        {!state.previewBody && <LoadingImage position="absolute" />}
+        {!!state.previewSliced && !state.sliceAcknowledged && (
+          <SliceNotice
+            className={styles.sliceNotice}
+            onClose={handleAcknowledged}
+          />
+        )}
+      </div>
+    );
+  }
+);
+
+TextPreviewer.displayName = "forwarded(TextPreviewer)";
 
 export default TextPreviewer;
