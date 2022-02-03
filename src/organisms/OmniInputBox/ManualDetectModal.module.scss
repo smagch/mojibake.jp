@@ -1,0 +1,85 @@
+@use "styles/colors";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  border-radius: 4px;
+  padding-top: 16px;
+  border: 1px solid colors.$hint;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
+}
+
+%padding {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.header {
+  @extend %padding;
+}
+
+.labelContainer {
+  @extend %padding;
+  height: 32px;
+}
+
+.label {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  background-color: #9a9a9a;
+  border-radius: 16px;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.title {
+  @extend %padding;
+
+  font-size: 18px;
+  color: colors.$strong;
+  font-weight: 700;
+}
+
+.actions {
+  @extend %padding;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+
+  > * {
+    width: 50%;
+  }
+
+  > *:first-child {
+    margin-right: 8px;
+  }
+
+  > *:last-child {
+    margin-left: 8px;
+  }
+}
+
+.textarea {
+  width: 100%;
+  font-size: 14px;
+  box-sizing: border-box;
+  display: flex;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border: 0;
+  outline: 0;
+  line-height: 1.4;
+  flex-grow: 1;
+  border-radius: 8px;
+  color: #414141;
+  height: 300px;
+}
