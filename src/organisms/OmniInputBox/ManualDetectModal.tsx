@@ -86,11 +86,13 @@ const ManualDetectModal = ({ file, onSubmit }: Props) => {
           </>
         )}
       </div>
-      <TextPreviewer
-        className={styles.textarea}
-        file={file}
-        encoding={encoding}
-      />
+      {!ended && (
+        <TextPreviewer
+          className={styles.textarea}
+          file={file}
+          encoding={encoding}
+        />
+      )}
     </div>
   );
 };
