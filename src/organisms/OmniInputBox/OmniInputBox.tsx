@@ -1,6 +1,6 @@
 import * as React from "react";
 import OmniInputWelcomeView from "./OmniInputWelcomeView";
-import FileViewer from "./FileViewer";
+import EncodingDetectView from "./EncodingDetectView";
 import clsx from "clsx";
 import styles from "./OmniInputBox.module.scss";
 import { useDndState } from "hooks/userDndState";
@@ -60,7 +60,7 @@ const OmniInputBox = ({ className }: Props) => {
       {!file ? (
         <OmniInputWelcomeView onSelectFiles={handleSelctFiles} />
       ) : (
-        <FileViewer file={file} onClear={handleFileClear} />
+        <EncodingDetectView file={file} onClear={handleFileClear} />
       )}
     </div>
   );

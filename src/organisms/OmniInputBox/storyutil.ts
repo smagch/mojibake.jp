@@ -28,6 +28,10 @@ export const useFile = (filename: string, repeat?: number): any => {
   const [file, setFile] = React.useState<File | null>(null);
 
   React.useEffect(() => {
+    if (file) {
+      return;
+    }
+
     let unmounted = false;
 
     async function init() {
@@ -42,7 +46,7 @@ export const useFile = (filename: string, repeat?: number): any => {
     return () => {
       unmounted = true;
     };
-  }, [filename, repeat]);
+  }, [filename, repeat, file]);
 
   return [file, setFile];
 };
