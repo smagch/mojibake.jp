@@ -4,6 +4,7 @@ import TextPreviewer from "./TextPreviewer";
 import Bullet from "./Bullet";
 import clsx from "clsx";
 import { Icon } from "atoms/Button";
+import { pushDataLayer } from "libs/datalayer";
 import styles from "./ManualDetectView.module.scss";
 
 type Props = {
@@ -53,15 +54,24 @@ const ManualDetectView = ({ file, onSubmit }: Props) => {
   const encoding = encodings[encodingIndex];
   const moveToNextEncoding = React.useCallback(() => {
     dispatch({ type: "NEXT" });
+    pushDataLayer({
+      event: process.env.NEXT_PUBLIC_GTM_EVENT_MANUAL_REJECT,
+    });
   }, []);
 
   const handleSubmit = React.useCallback(() => {
     onSubmit(encoding);
+    pushDataLayer({
+      event: process.env.NEXT_PUBLIC_GTM_EVENT_MANUAL_APPROVE,
+    });
   }, [encoding, onSubmit]);
 
   const handleReset = React.useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     dispatch({ type: "RESET" });
+    pushDataLayer({
+      event: process.env.NEXT_PUBLIC_GTM_EVENT_MANUAL_RESET,
+    });
   }, []);
 
   return (
