@@ -1,0 +1,114 @@
+@use "styles/colors";
+
+.container {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  padding-top: 16px;
+  border: 1px solid colors.$hint;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.08);
+}
+
+%padding {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.title {
+  @extend %padding;
+
+  font-size: 18px;
+  color: colors.$strong;
+  font-weight: 700;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  font-size: 14px;
+  color: colors.$error;
+
+  > a {
+    text-decoration: underline;
+    transition: color 0.3s;
+    color: colors.$error;
+    display: inline-block;
+
+    &:hover {
+      color: lighten(colors.$error, 20%);
+    }
+  }
+}
+
+.actions {
+  @extend %padding;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  border-bottom: 1px solid #eee;
+
+  > * {
+    width: 50%;
+  }
+
+  > *:first-child {
+    margin-right: 8px;
+  }
+
+  > *:last-child {
+    margin-left: 8px;
+  }
+
+  &.error {
+    justify-items: flex-start;
+
+    > * {
+      width: auto;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
+
+.textarea {
+  flex-grow: 1;
+}
+
+.errorButton {
+  color: colors.$error;
+
+  > svg {
+    fill: colors.$error;
+  }
+
+  &:hover:not([disabled]) {
+    color: lighten(colors.$error, 16%);
+
+    > svg {
+      fill: lighten(colors.$error, 16%);
+    }
+  }
+}
+
+.correctButton {
+  color: colors.$green;
+
+  > svg {
+    fill: colors.$green;
+  }
+
+  &:hover:not([disabled]) {
+    color: lighten(colors.$green, 16%);
+
+    > svg {
+      fill: lighten(colors.$green, 16%);
+    }
+  }
+}

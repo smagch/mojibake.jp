@@ -18,7 +18,6 @@ const HeroSection = () => {
             <span>文字化けした</span>
             <span>ファイルを</span>
             <span>元通りにできます。</span>
-            <span>エクセルファイルもOK。</span>
           </h1>
           <p className={styles.description}>
             Mojibake
