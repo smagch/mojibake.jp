@@ -4,7 +4,7 @@ import TextPreviewer from "./TextPreviewer";
 import Bullet from "./Bullet";
 import clsx from "clsx";
 import { Icon } from "atoms/Button";
-import styles from "./ManualDetectModal.module.scss";
+import styles from "./ManualDetectView.module.scss";
 
 type Props = {
   file: File;
@@ -47,7 +47,7 @@ function reset(): State {
   };
 }
 
-const ManualDetectModal = ({ file, onSubmit }: Props) => {
+const ManualDetectView = ({ file, onSubmit }: Props) => {
   const [state, dispatch] = React.useReducer(reducer, undefined, reset);
   const { encodingIndex, ended } = state;
   const encoding = encodings[encodingIndex];
@@ -108,4 +108,4 @@ const ManualDetectModal = ({ file, onSubmit }: Props) => {
   );
 };
 
-export default ManualDetectModal;
+export default ManualDetectView;

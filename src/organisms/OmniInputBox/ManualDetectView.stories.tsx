@@ -1,5 +1,5 @@
 import * as React from "react";
-import ManualDetectModal from "./ManualDetectModal";
+import ManualDetectView from "./ManualDetectView";
 import { useFile } from "./storyutil";
 import { action } from "@storybook/addon-actions";
 
@@ -8,12 +8,12 @@ export const Demo = () => {
 
   return (
     <div style={{ padding: "16px", height: "400px", display: "flex" }}>
-      <ManualDetectModal file={file} onSubmit={action("onSubmit")} />
+      <ManualDetectView file={file} onSubmit={action("onSubmit")} />
     </div>
   );
 };
 
 export default {
-  title: "organisms/OmniInputBox/ManualDetectModal",
-  component: ManualDetectModal,
+  title: "organisms/OmniInputBox/ManualDetectView",
+  component: ManualDetectView,
 };
