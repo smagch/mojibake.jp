@@ -80,3 +80,35 @@
 .textarea {
   flex-grow: 1;
 }
+
+.errorButton {
+  color: colors.$error;
+
+  > svg {
+    fill: colors.$error;
+  }
+
+  &:hover:not([disabled]) {
+    color: lighten(colors.$error, 16%);
+
+    > svg {
+      fill: lighten(colors.$error, 16%);
+    }
+  }
+}
+
+.correctButton {
+  color: colors.$green;
+
+  > svg {
+    fill: colors.$green;
+  }
+
+  &:hover:not([disabled]) {
+    color: lighten(colors.$green, 16%);
+
+    > svg {
+      fill: lighten(colors.$green, 16%);
+    }
+  }
+}

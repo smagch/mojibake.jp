@@ -1,3 +1,12 @@
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .preview {
   position: relative;
   overflow: hidden;
@@ -23,6 +32,9 @@
   flex-grow: 1;
   border-radius: 8px;
   color: #414141;
+  transition: opacity 0.3s;
+  opacity: 1;
+  animation: fadein 0.3s ease-in-out;
 
   &.sliced {
     opacity: 0.3;

@@ -18,6 +18,7 @@ type State = {
   previewBody: string;
   previewSliced?: boolean;
   sliceAcknowledged?: boolean;
+  loading: boolean;
 };
 
 type Action =
@@ -36,6 +37,7 @@ function reducer(state: State, action: Action): State {
         previewBody: action.payload,
         previewSliced: action.previewSliced,
         sliceAcknowledged: action.previewSliced ? false : undefined,
+        loading: false,
       };
     case "SLICE_ACKNOWLEDGED":
       return {
@@ -50,6 +52,7 @@ function reducer(state: State, action: Action): State {
 function reset(): State {
   return {
     previewBody: "",
+    loading: true,
   };
 }
 
@@ -84,6 +87,8 @@ const TextPreviewer = React.forwardRef<Handle, Props>(
       let unmounted = false;
 
       async function fetchPreview() {
+        dispatch({ type: "RESET" });
+
         const url = URL.createObjectURL(file);
         const res = await fetch(url);
         if (!res.body || unmounted) {
@@ -156,19 +161,25 @@ const TextPreviewer = React.forwardRef<Handle, Props>(
       },
     }));
 
+    console.log("loading:", state.loading);
+
     return (
       <div className={clsx(styles.preview, className)}>
-        <textarea
-          className={clsx({
-            [styles.textarea]: true,
-            [styles.sliced]: !!state.previewSliced && !state.sliceAcknowledged,
-          })}
-          readOnly={true}
-          value={state.previewBody}
-          onChange={noop}
-          onClick={textAreaClickHanlder}
-        />
-        {!state.previewBody && <LoadingImage position="absolute" />}
+        {state.loading ? (
+          <LoadingImage position="absolute" />
+        ) : (
+          <textarea
+            className={clsx({
+              [styles.textarea]: true,
+              [styles.sliced]:
+                !!state.previewSliced && !state.sliceAcknowledged,
+            })}
+            readOnly={true}
+            value={state.previewBody}
+            onChange={noop}
+            onClick={textAreaClickHanlder}
+          />
+        )}
         {!!state.previewSliced && !state.sliceAcknowledged && (
           <SliceNotice
             className={styles.sliceNotice}

@@ -3,6 +3,7 @@ import { PlainButton } from "atoms/Button";
 import TextPreviewer from "./TextPreviewer";
 import Bullet from "./Bullet";
 import clsx from "clsx";
+import { Icon } from "atoms/Button";
 import styles from "./ManualDetectModal.module.scss";
 
 type Props = {
@@ -77,11 +78,21 @@ const ManualDetectModal = ({ file, onSubmit }: Props) => {
           </div>
         ) : (
           <>
-            <PlainButton onClick={moveToNextEncoding}>
-              文字化けしている
+            <PlainButton
+              className={styles.errorButton}
+              modifier="iconRight"
+              onClick={moveToNextEncoding}
+            >
+              <span>文字化けしている</span>
+              <Icon name="error" />
             </PlainButton>
-            <PlainButton onClick={handleSubmit}>
-              正しく表示されている
+            <PlainButton
+              className={styles.correctButton}
+              modifier="iconRight"
+              onClick={handleSubmit}
+            >
+              <span>正しく表示されている</span>
+              <Icon name="check_circle" />
             </PlainButton>
           </>
         )}
