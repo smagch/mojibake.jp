@@ -161,8 +161,6 @@ const TextPreviewer = React.forwardRef<Handle, Props>(
       },
     }));
 
-    console.log("loading:", state.loading);
-
     return (
       <div className={clsx(styles.preview, className)}>
         {state.loading ? (

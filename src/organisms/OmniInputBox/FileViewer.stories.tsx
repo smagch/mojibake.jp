@@ -28,7 +28,11 @@ const Demo = ({ filename, repeat }: { filename: string; repeat?: number }) => {
 };
 
 export const SjisSuccess = () => <Demo filename="/rashomon.shift-jis.txt" />;
+export const SjisShort = () => (
+  <Demo filename="/rashomon.shift-jis-short.txt" />
+);
 export const UTF8Success = () => <Demo filename="/rashomon.utf-8.txt" />;
+export const UTF8Short = () => <Demo filename="/rashomon.utf-8-short.txt" />;
 export const DetectError = () => <Demo filename="/error.txt" />;
 export const BigUTF8 = () => (
   <Demo filename="/rashomon.utf-8.txt" repeat={60} />
