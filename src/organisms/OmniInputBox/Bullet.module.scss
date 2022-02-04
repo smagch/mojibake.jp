@@ -1,0 +1,26 @@
+@use "styles/colors";
+
+.container {
+  display: flex;
+  height: 28px;
+  align-items: center;
+
+  > * {
+    margin-right: 16px;
+  }
+
+  > *:last-child {
+    margin-right: 0;
+  }
+}
+
+.bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #c4c4c4;
+
+  &.selected {
+    background-color: colors.$primary;
+  }
+}
